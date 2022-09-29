@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="author" content="Валентин Соколов, Евгений Синельников и другие.">
+<title>Руководство по сборке RPM пакетов для дистрибутивов ALT</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
+:not(pre)>code.nobreak{word-wrap:normal}
+:not(pre)>code.nowrap{white-space:nowrap}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+table.tableblock{max-width:100%;border-collapse:separate}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
+table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
+table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
+table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
+table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
+table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
+table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Руководство по сборке RPM пакетов для дистрибутивов ALT</h1>
+<div class="details">
+<span id="author" class="author">Валентин Соколов, Евгений Синельников и другие.</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Оглавление</div>
+<ul class="sectlevel1">
+<li><a href="#introduction">Вступление</a>
+<ul class="sectlevel2">
+<li><a href="#pdf-version">PDF Версия</a></li>
+<li><a href="#document-conventions">Файловая структура</a></li>
+<li><a href="#contributing-to-this-guide">Вклад в руководство</a></li>
+</ul>
+</li>
+<li><a href="#prerequisites">Необходимые пакеты</a></li>
+<li><a href="#Why-Package-Software-with-RPM">Зачем упаковывать программное обеспечение с помощью RPM?</a></li>
+<li><a href="#packaging-software">Программное обеспечение для упаковки</a>
+<ul class="sectlevel2">
+<li><a href="#rpm-packages">RPM Пакеты</a>
+<ul class="sectlevel3">
+<li><a href="#what-is-an-rpm">Что такое RPM?</a></li>
+<li><a href="#rpm-packaging-tools">Инструменты для упаковки RPM</a></li>
+<li><a href="#rpm-packaging-workspace">Рабочее пространство для упаковки RPM</a></li>
+<li><a href="#what-is-a-spec-file">Что такое SPEC файл?</a></li>
+<li><a href="#buildroots">BuildRoots</a></li>
+<li><a href="#working-with-spec-files">Работа со SPEC файлами</a></li>
+</ul>
+</li>
+<li><a href="#building-rpms">Сборка RPMS</a>
+<ul class="sectlevel3">
+<li><a href="#source-rpms">Исходный RPMs</a></li>
+<li><a href="#binary-rpms">Бинарный RPMS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#hello-world">Ваш Первый пакет RPM</a>
+<ul class="sectlevel3">
+<li><a href="#rpm-macros">RPM Макросы</a></li>
+<li><a href="#patching-software">Программное обеспечение для исправления ошибок</a></li>
+<li><a href="#putting-source-code-into-tarball">Создание Tarball с исходным кодом</a></li>
+<li><a href="#using_Make">Make</a></li>
+<li><a href="#version-control-systems">Система контроля версий</a></li>
+<li><a href="#Gear_ALT">Окружение Gear</a></li>
+<li><a href="#Hasher_ALT">Окружение Hasher</a></li>
+</ul>
+</li>
+<li><a href="#advanced-topics">Дополнительные материалы</a>
+<ul class="sectlevel2">
+<li><a href="#Signing-Packages">Подпись пакетов</a>
+<ul class="sectlevel3">
+<li><a href="#Adding-a-Signature-to-a-Package">Добавление подписи к пакету</a></li>
+<li><a href="#Replacing-a-Package-Signature">Замена подписи пакета</a></li>
+<li><a href="#Build-time-Signing">Подпись во время сборки</a></li>
+</ul>
+</li>
+<li><a href="#more-on-macros">Подробнее о макросах</a>
+<ul class="sectlevel3">
+<li><a href="#defining-your-own">Определение Ваших Собственных Макросов</a></li>
+<li><a href="#setup">%setup</a></li>
+<li><a href="#files">%files</a></li>
+<li><a href="#built-in-macros">Встроенные макросы</a></li>
+<li><a href="#rpm-distribution-macros">RPM Макросы, предоставляемые дистрибутивом</a></li>
+</ul>
+</li>
+<li><a href="#custom-macros">Пользовательские макросы</a></li>
+<li><a href="#epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</a>
+<ul class="sectlevel3">
+<li><a href="#epoch">Epoch</a></li>
+<li><a href="#triggers-and-scriptlets">Скриптлеты и Триггеры</a></li>
+</ul>
+</li>
+<li><a href="#rpm-conditionals">Условные обозначения RPM</a>
+<ul class="sectlevel3">
+<li><a href="#_синтаксис_условий_rpm">Синтаксис условий RPM</a></li>
+<li><a href="#_примеры_условий_rpm">Примеры условий RPM</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_новые_возможности_rpm_в_rhel_7">Appendix A: Новые возможности RPM в RHEL 7</a></li>
+<li><a href="#_ссылки_на_источники">Appendix B: Ссылки на источники</a></li>
+<li><a href="#_выражение_благодарности">Appendix C: Выражение благодарности</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="introduction">Вступление</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Руководство по упаковке RPM пакетов:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Как подготовить исходный код для упаковки в RPM.</dt>
+<dd>
+<p>Ссылка на раздел для тех, кто не имеет опыта разработки ПО.
+<a href="#preparing-software-for-packaging">[preparing-software-for-packaging]</a>.</p>
+</dd>
+<dt class="hdlist1">Как упаковать исходный код в RPM.</dt>
+<dd>
+<p>Ссылка на раздел для разработчиков ПО, которым необходимо упаковать программное обеспечение в RPMs. <a href="#packaging-software">Программное обеспечение для упаковки</a>.</p>
+</dd>
+<dt class="hdlist1">Расширенные сценарии упаковки.</dt>
+<dd>
+<p>Эта ссылка на справочный материал для упаковщиков RPM, работающих с расширенными сценариями упаковки RPM.
+<a href="#advanced-topics">Дополнительные материалы</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="sect2">
+<h3 id="pdf-version">PDF Версия</h3>
+<div class="paragraph">
+<p>Вы также можете скачать
+<a href="https://rpm-packaging-guide-ru.github.io/rpm-packaging-guide-ru.pdf">PDF версию
+данного документа</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="document-conventions">Файловая структура</h3>
+<div class="paragraph">
+<p>Перед тем, как приступить к сборке, нужно создать структуру каталогов, необходимую RPM, находящуюся в Вашем «домашнем» каталоге:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Выходные данные команд и содержимое текстовых файлов, включая исходный код, размещаются в блоках:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ tree ~/RPM/
+/home/user/RPM/
+|-- BUILD
+|-- BUILDROOT
+|-- RPMS
+|   |-- i586
+|   |-- x86_64
+|   `-- noarch
+|-- SOURCES
+|-- SPECS
+`-- SRPMS</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="txt">Name:           bello
+Version:
+Release:        alt1
+Summary:</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="python">#!/usr/bin/env python
+
+print("Hello World")</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Темы, представляющие интерес, или словарные термины упоминаются либо как ссылки на соответствующую документацию или веб-сайт выделены <strong>жирным</strong> шрифтом, либо <em>курсивом</em>. Первые упоминания некоторых терминов ссылаются на соответствующую документацию.</p>
+</li>
+<li>
+<p>Названия утилит, команд и других элементов, обычно встречающихся в коде, написаны <code>моноширинным</code> шрифтом.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="contributing-to-this-guide">Вклад в руководство</h3>
+<div class="paragraph">
+<p>Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или запрос на извлечение на
+<a href="https://github.com/redhat-developer/rpm-packaging-guide"> GitHub репозиторий</a>.</p>
+</div>
+<div class="paragraph">
+<p>Обе формы вклада высоко ценятся и приветствуются.</p>
+</div>
+<div class="paragraph">
+<p>Не стесняйтесь подавать заявку на решение проблемы с обратной связью, отправлять запрос на извлечение
+<a href="https://github.com/redhat-developer/rpm-packaging-guide">на GitHub</a> или и то, и другое!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="prerequisites">Необходимые пакеты</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Чтобы следовать этому руководству, Вам понадобятся пакеты, упомянутые ниже.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Некоторые из этих пакетов устанавливаются по умолчанию в
+<a href="https://www.altlinux.org/Releases">ALT Linux</a>. Установка проводится с правами суперпользователя.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>В ALT Linux p10:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ su --
+Password:
+$ apt-get update
+.
+.
+.
+$ apt-get install gcc rpm-build rpmlint make python bash gear hasher patch rpmdevtools</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Why-Package-Software-with-RPM">Зачем упаковывать программное обеспечение с помощью RPM?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Менеджер пакетов RPM (RPM) - это система управления пакетами, которая работает на Red Hat Enterprise Linux, CentOS и Fedora. RPM упрощает распространение, управление и обновление программного обеспечения, создаваемого для Red Hat Enterprise Linux, CentOS и Fedora. Многие поставщики программного обеспечения распространяют своё программное обеспечение через обычный архив (например, tarball). Однако, упаковка программного обеспечения в пакеты RPM имеет ряд преимуществ. Эти преимущества описаны ниже.</p>
+</div>
+<div class="paragraph">
+<p>С помощью RPM Вы можете:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Устанавливать, переустанавливать, удалять, обновлять и проверять пакеты</dt>
+<dd>
+<p>Пользователи могут использовать стандартные средства управления пакетами (например, Yum или PackageKit) для установки, переустановки, удаления, обновления и проверки ваших пакетов RPM.</p>
+</dd>
+<dt class="hdlist1">Использовать базу данных установленных пакетов для запроса и проверки пакетов</dt>
+<dd>
+<p>Поскольку RPM поддерживает базу данных установленных пакетов и их файлов, пользователи могут легко запрашивать и проверять пакеты в своей системе.</p>
+</dd>
+<dt class="hdlist1">Использовать метаданные для описания пакетов, инструкций по их установке и т. д.</dt>
+<dd>
+<p>Каждый пакет RPM содержит метаданные, описывающие компоненты пакета, версию, выпуск, размер, URL-адрес проекта, инструкции по установке и так далее</p>
+</dd>
+<dt class="hdlist1">Упаковывать нетронутые исходные коды программного обеспечения в исходные и двоичные пакеты</dt>
+<dd>
+<p>RPM позволяет вам брать нетронутые исходные коды программного обеспечения и упаковывать их в исходные и двоичные пакеты для ваших пользователей. В исходных пакетах у Вас есть первозданные исходные тексты вместе с любыми использованными исправлениями, а также полные инструкции по сборке. Такая конструкция облегчает обслуживание пакетов по мере выпуска новых версий вашего программного обеспечения.</p>
+</dd>
+<dt class="hdlist1">Добавлять пакеты в репозитории Yum</dt>
+<dd>
+<p>Вы можете добавить свой пакет в репозиторий Yum, который позволяет клиентам легко находить и развертывать ваше программное обеспечение.</p>
+</dd>
+<dt class="hdlist1">Установить цифровую подпись Ваших упаковок</dt>
+<dd>
+<p>Используя ключ подписи GPG, Вы можете подписать посылку цифровой подписью, чтобы пользователи могли проверить подлинность упаковки.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="packaging-software">Программное обеспечение для упаковки</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="rpm-packages">RPM Пакеты</h3>
+<div class="paragraph">
+<p>В этом разделе рассматриваются основы формата упаковки RPM. Дополнительные сведения смотри в разделе
+<a href="#advanced-topics">Дополнительные материалы</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="what-is-an-rpm">Что такое RPM?</h4>
+<div class="paragraph">
+<p>Пакет RPM - это просто файл, содержащий другие файлы и информацию о них, необходимую системе. В частности, пакет RPM состоит из архива
+<a href="https://en.wikipedia.org/wiki/Cpio">cpio</a>
+, который содержит файлы, и заголовка RPM, который содержит метаданные о пакете. Диспетчер пакетов <code>rpm</code> использует эти метаданные для определения зависимостей, места установки файлов и другой информации.</p>
+</div>
+<div class="paragraph">
+<p>Существует два типа пакетов RPM:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>исходник RPM (SRPM)</p>
+</li>
+<li>
+<p>бинарный RPM</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>SRPMs и бинарные RPMs имеют общий формат файла и инструментарий, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости исправления к нему и файл спецификации, в котором описывается, как встроить исходный код в бинарный RPM. Бинарный RPM содержит двоичные файлы, созданные из исходных текстов и патчей.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rpm-packaging-tools">Инструменты для упаковки RPM</h4>
+
+</div>
+<div class="sect3">
+<h4 id="rpm-packaging-workspace">Рабочее пространство для упаковки RPM</h4>
+<div class="paragraph">
+<p>Чтобы настроить макет каталога, который является рабочей областью упаковки RPM, используйте утилиту <code>rpmdev-setuptree</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmdev-setuptree
+
+$ tree ~/rpmbuild/
+/home/user/rpmbuild/
+|-- BUILD
+|-- RPMS
+|-- SOURCES
+|-- SPECS
+`-- SRPMS`
+
+5 directories, 0 files</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Созданные каталоги служат следующим целям:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Каталог</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Назначение</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BUILD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Содержит все файлы, которые появляются при создании пакета.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RPMS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Бинарные RPM создаются здесь, в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOURCES</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь упаковщик помещает сжатые архивы исходного кода и патчи. Команда <code>rpmbuild</code> ищет их здесь.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SPECS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Упаковщик помещает сюда файлы спецификаций.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SRPMS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Когда rpmbuild используется для сборки SRPM вместо бинарного RPM, результирующий SRPM создается здесь.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="what-is-a-spec-file">Что такое SPEC файл?</h4>
+<div class="paragraph">
+<p>Файл спецификации можно рассматривать как "рецепт", который утилита <code>rpmbuild</code> использует для фактической сборки RPM. Он сообщает системе сборки, что делать, определяя инструкции в серии разделов. Разделы определены в <em>Преамбуле</em> и в <em>Основной части</em>. <em>Преамбула</em> содержит ряд элементов метаданных, которые используются в <em>Основной части</em>. Тело содержит основную часть инструкций.</p>
+</div>
+<div class="sect4">
+<h5 id="preamble-items">Пункты преамбулы</h5>
+<div class="paragraph">
+<p>В этой таблице перечислены элементы, используемые в разделе преамбулы файла спецификации RPM:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 70%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SPEC Директива</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Определение</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Базовое имя пакета, которое должно совпадать с именем файла спецификации.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Версия upstream-кода.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Release</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Релиз пакета используется для указания номера сборки пакета при данной версии upstream-кода. Как правило, установите начальное значение равным 1%{?dist} и увеличивайте его с каждым новым выпуском пакета. Сбросьте значение до 1 при создании новой версии программного обеспечения.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Summary</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Краткое, в одну строку, описание пакета.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>License</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на упаковываемое программное обеспечение.
+Для пакетов, распространяемых в дистрибутивах сообщества, таких как <a href="https://getfedora.org/">Fedora</a>, это должна быть лицензия с открытым исходным кодом, соответствующая рекомендациям по лицензированию конкретного дистрибутива.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>URL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это веб-сайт upstream-проекта для упаковываемого программного обеспечения.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Source0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Путь или URL-адрес к сжатому архиву исходного кода (не исправленный, исправления обрабатываются в другом месте). Этот раздел должен указывать на доступное и надежное хранилище архива, например, на upstream-страницу, а не на локальное хранилище упаковщика. При необходимости можно добавить дополнительные исходные директивы, каждый раз увеличивая их количество, например: Source1, Source2, Source3 и так далее.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Patch0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Название первого исправления, которое при необходимости будет применено к исходному коду. При необходимости можно добавить дополнительные директивы PatchX, увеличивая их количество каждый раз, например: Patch1, Patch2, Patch3 и так далее.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildArch</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Если пакет не зависит от архитектуры, например, если он полностью написан на интерпретируемом языке программирования, установите для этого значение <code>BuildArch: noarch</code>. Если этот параметр не задан, пакет автоматически наследует архитектуру компьютера, на котором он построен, например <code>x86_64</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildRequires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых для сборки программы, написанной на скомпилированном языке. Может быть несколько записей <code>BuildRequires</code>, каждая в отдельной строке в SPEC файле.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Requires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых программному обеспечению для запуска после установки. Может быть несколько записей <code>Requires</code>, каждая в отдельной строке в SPEC файле.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ExcludeArch</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Если часть программного обеспечения не может работать на определенной архитектуре процессора, Вы можете исключить эту архитектуру здесь.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Директивы <code>Name</code>, <code>Version</code> и <code>Release</code> содержат имя файла пакета RPM. Разработчики пакетов RPM и системные администраторы часто называют эти три директивы <strong>N-V-R</strong> или <strong>NVR</strong>, поскольку имена файлов пакетов RPM имеют формат <code>NAME-VERSION-RELEASE</code>.</p>
+</div>
+<div class="paragraph">
+<p>Вы можете получить пример <code>NAME-VERSION-RELEASE</code>, выполнив запрос с использованием <code>rpm</code> для конкретного пакета:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -q python
+python-2.7.5-34.el7.x86_64</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Здесь <code>python</code> - это имя пакета, <code>2.7.5</code> - версия, а <code>34.el7</code> - релиз. Последний маркер <code>x86_64</code> - сведения об архитектуре.
+В отличие от NVR, маркер архитектуры не находится под прямым управлением RPM упаковщика, а определяется средой сборки <code>rpmbuild</code>. Исключением из этого правила является архитектурно-независимый пакет <code>noarch</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="body-items">Составляющие основной части</h5>
+<div class="paragraph">
+<p>В этой таблице перечислены элементы, используемые в разделе Body (Тело, основная часть) файла спецификации RPM:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SPEC Директива</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Определение</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Полное описание программного обеспечения, входящего в комплект поставки RPM. Это описание может занимать несколько строк и может быть разбито на абзацы.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%prep</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для подготовки программного обеспечения к сборке, например, распаковка архива в Source0. Эта директива может содержать сценарий оболочки.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%build</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для фактической сборки программного обеспечения в машинный код (для скомпилированных языков) или байт-код (для некоторых интерпретируемых языков).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%install</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для копирования требуемых артефактов сборки из <code>%builddir</code> (где происходит сборка) в<code>%buildroot</code> каталог (который содержит структуру каталогов с файлами, подлежащими упаковке). Обычно это означает копирование файлов из <code>~/rpmbuild/BUILD</code> в <code>~/rpmbuild/BUILDROOT</code> и создание необходимых каталогов <code>~/rpmbuild/BUILDROOT</code>.  Это выполняется только при создании пакета, а не при установке пакета конечным пользователем. Подробности см. в разделе <a href="#working-with-spec-files">Работа со SPEC файлом</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%check</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Команда или серия команд для тестирования программного обеспечения. Обычно включает в себя такие вещи, как модульные тесты.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%files</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Список файлов, которые будут установлены в системе конечного пользователя.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%changelog</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Запись изменений, произошедших с пакетом между различными <code>Version</code> или <code>Release</code> сборками.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="advanced-items">Дополнительные элементы</h5>
+<div class="paragraph">
+<p>Файл спецификации также может содержать дополнительные элементы. Например, файл спецификации может содержать <em>скриптлеты_ и </em>триггеры__. Они вступают в силу в разные моменты процесса установки в системе конечного пользователя (не в процессе сборки).</p>
+</div>
+<div class="paragraph">
+<p>Дополнительную информацию см.  <a href="#triggers-and-scriptlets">Триггеры и скриптлеты</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="buildroots">BuildRoots</h4>
+<div class="paragraph">
+<p>В контексте упаковки RPM "buildroot" - это среда
+<a href="https://en.wikipedia.org/wiki/Chroot">chroot</a>
+Это означает, что артефакты сборки размещаются здесь с использованием той же иерархии файловой системы, что и в системе конечного пользователя, при этом "buildroot" выступает в качестве корневого каталога. Размещение артефактов сборки должно соответствовать стандарту иерархии файловой системы конечного пользователя.</p>
+</div>
+<div class="paragraph">
+<p>Файлы в "buildroot" позже помещаются в архив
+<a href="https://en.wikipedia.org/wiki/Cpio">cpio</a>
+, который становится основной частью RPM. Когда RPM устанавливается в системе конечного пользователя, эти файлы извлекаются в корневой каталог, сохраняя правильную иерархию.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Начиная с выпуска Red Hat Enterprise Linux 6, программа <code>rpmbuild</code> имеет свои собственные значения макросов по умолчанию. Поскольку переопределение этих значений по умолчанию приводит к ряду проблем, Red Hat не рекомендует определять собственное значение этого макроса. Вы можете использовать макрос
+<code>%{buildroot}</code>  с параметрами по умолчанию из каталога <code>rpmbuild</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="working-with-spec-files">Работа со SPEC файлами</h4>
+<div class="paragraph">
+<p>Большая часть упаковки программного обеспечения в RPMs - это редактирование файла спецификации. В этом разделе мы обсудим, как создать и изменить SPEC файл.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы упаковать новое программное обеспечение, Вам необходимо создать новый файл спецификации. Вместо того, чтобы писать его вручную с нуля, используйте утилиту <code>rpmdev-newspec</code>. Она создаёт незаполненный файл спецификации, и Вы заполняете необходимые директивы и поля.</p>
+</div>
+<div class="paragraph">
+<p>В этом руководстве мы используем три примера реализации программы 'Hello
+World!', созданной при подготовке <a href="#preparing-software-for-packaging">программного обеспечения для упаковки</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/bello-0.1.tar.gz">bello-0.1.tar.gz</a></p>
+</li>
+<li>
+<p><a href="https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/pello-0.1.1.tar.gz">pello-0.1.1.tar.gz</a></p>
+</li>
+<li>
+<p><a href="https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/cello-1.0.tar.gz">cello-1.0.tar.gz</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://raw.githubusercontent.com/redhat-developer/rpm-packaging-guide/master/example-code/cello-output-first-patch.patch">cello-output-first-patch.patch</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Переместите их в <code>~/rpmbuild/SOURCES</code>.</p>
+</div>
+<div class="paragraph">
+<p>Создайте SPEC файл для каждой из трёх программ:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Некоторые текстовые редакторы, ориентированные на программистов, предварительно заполняют новый <code>.spec</code> файл с их собственным шаблоном спецификации. <code>rpmdev-newspec</code> предоставляет независимый от редактора метод, именно поэтому он используется в этом руководстве.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ cd ~/rpmbuild/SPECS
+
+$ rpmdev-newspec bello
+bello.spec created; type minimal, rpm version &gt;= 4.11.
+
+$ rpmdev-newspec cello
+cello.spec created; type minimal, rpm version &gt;= 4.11.
+
+$ rpmdev-newspec pello
+pello.spec created; type minimal, rpm version &gt;= 4.11.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>~/rpmbuild/SPECS/</code> каталог теперь имеет три SPEC файла с именами
+<code>bello.spec</code>, <code>cello.spec</code>, и <code>pello.spec</code>.</p>
+</div>
+<div class="paragraph">
+<p>Изучите файлы. Директивы в них представляют собой директивы, описанные в разделе
+<a href="#what-is-a-spec-file">Что такое SPEC файл</a>.  В следующих разделах Вы заполните эти файлы спецификаций.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Утилита <code>rpmdev-newspec</code> не использует рекомендации или соглашения, характерные для какого-либо конкретного дистрибутива Linux. Однако этот документ предназначен для Fedora, CentOS и RHEL, поэтому В ы заметите, что:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Используйте <code>rm $RPM_BUILD_ROOT</code> при сборке на  <em>CentOS</em> (версии, предшествующие версии 7.0)
+или на <a href="https://getfedora.org/">Fedora</a> (версии, предшествующие версии 18).</p>
+</li>
+<li>
+<p>Мы предпочитаем использовать обозначение <code>%{buildroot}</code> вместо <code>$RPM_BUILD_ROOT</code> при обращении к Buildroot RPM для обеспечения согласованности со всеми другими определенными или предоставленными макросами во всем файле спецификации..</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ниже приведены три примера. Каждый из них полностью описан, так что вы можете перейти к конкретному, если он соответствует вашим потребностям в упаковке. Или прочтите их все, чтобы полностью изучить упаковку различных видов программного обеспечения.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 15%;">
+<col style="width: 85%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Имя программы</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Объяснение примера</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bello</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на необработанном интерпретируемом языке программирования. Пример демонстрирует, когда исходный код не нужно собирать, а нужно только установить. Если необходимо упаковать предварительно скомпилированный бинарный файл, Вы также можете использовать этот метод.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pello</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на интерпретируемом языке программирования с последующей байт-компиляцией. Пример демонстрирует байт-компиляцию исходного кода и установку байт-кода - результирующих, предварительно оптимизированных файлов.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cello</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на изначально скомпилированном языке программирования. Пример демонстрирует общий процесс компиляции исходного кода в машинный код и установки результирующих исполняемых файлов.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="building-rpms">Сборка RPMS</h3>
+<div class="paragraph">
+<p>RPMs собираются с помощью команды  <code>rpmbuild</code>. Различные сценарии и желаемые результаты требуют различных комбинаций аргументов для <code>rpmbuild</code>. В этом разделе описываются два основных сценария:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>сборка исходного RPM</p>
+</li>
+<li>
+<p>сборка бинарного RPM</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Команда <code>rpmbuild</code> ожидает определенную структуру каталогов и файлов.  Это та же структура, что и в утилите <code>rpmdev-setuptree</code>. Предыдущие инструкции также подтвердили требуемую структуру.</p>
+</div>
+<div class="sect3">
+<h4 id="source-rpms">Исходный RPMs</h4>
+<div class="paragraph">
+<p>Зачем создавать исходный RPM (SRPM)?</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Чтобы сохранить точный источник определенного Name-Version-Release RPM, который был развернут в среде.  Это включает в себя точный SPEC файл, исходный код и все соответствующие исправления. Это полезно для просмотра истории и для отладки.</p>
+</li>
+<li>
+<p>Чтобы иметь возможность создавать бинарный RPM на другой аппаратной платформе или
+<a href="https://en.wikipedia.org/wiki/Microarchitecture">архитектуре</a>.</p>
+</li>
+</ol>
+</div>
+<div class="sect4">
+<h5 id="create-source-rpms">Для сборки SRPM:</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -bs _SPECFILE_</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Замените <em>SPECFILE</em> именем SPEC файла. Параметр  <code>-bs</code> "исходный код сборки".</p>
+</div>
+<div class="paragraph">
+<p>Здесь мы собираем SRPMs для <code>bello</code>, <code>pello</code> и <code>cello</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ cd ~/rpmbuild/SPECS/
+
+$ rpmbuild -bs bello.spec
+Wrote: /home/admiller/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
+
+$ rpmbuild -bs pello.spec
+Wrote: /home/admiller/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
+
+$ rpmbuild -bs cello.spec
+Wrote: /home/admiller/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Обратите внимание, что SRPMS были помещены в каталог  <code>rpmbuild/SRPMS</code>, который является частью структуры, ожидаемой <code>rpmbuild</code>.</p>
+</div>
+<div class="paragraph">
+<p>Это все, что нужно для сборки SRPM.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="binary-rpms">Бинарный RPMS</h4>
+<div class="paragraph">
+<p>Существует два метода сборки бинарных RPMs:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Восстановление его из SRPM с использованием комманды<code>rpmbuild --rebuild</code>.</p>
+</li>
+<li>
+<p>Собираем его из файла спецификации с помощью команды <code>rpmbuild -bb</code>. Опция  <code>-bb</code> означает "собрать бинарный файл" (<code>build binary</code>).</p>
+</li>
+</ol>
+</div>
+<div class="sect4">
+<h5 id="rebuild">Восстановление из исходного RPM</h5>
+<div class="paragraph">
+<p>Чтобы перестроить <code>bello</code>, <code>pello</code> и <code>cello</code> из исходных RPM (SRPMs), запустите:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild --rebuild ~/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
+[output truncated]
+
+$ rpmbuild --rebuild ~/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
+[output truncated]
+
+$ rpmbuild --rebuild ~/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm
+[output truncated]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь Вы собрали RPM. Несколько заметок:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Выходные данные, генерируемые при сборке бинарного RPM, являются подробными, что полезно для отладки. Выходные данные различаются для разных примеров и соответствуют их SPEC файлам.</p>
+</li>
+<li>
+<p>Конечные бинарные RPM находятся в   <code>~/rpmbuild/RPMS/YOURARCH</code>, где <code>YOURARCH</code> - это Ваша
+<a href="https://en.wikipedia.org/wiki/Microarchitecture">архитектура</a>
+, или в
+<code>~/rpmbuild/RPMS/noarch/</code>, если пакет не зависит от архитектуры.</p>
+</li>
+<li>
+<p>Вызов <code>rpmbuild --rebuild</code> включает в себя:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Установку содержимого RPM - файла спецификации и исходного кода - в каталог <code>~/rpmbuild/</code>.</p>
+</li>
+<li>
+<p>Сборка с использованием установленного содержимого.</p>
+</li>
+<li>
+<p>Удаление файла спецификации и исходного кода.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Вы можете сохранить файл спецификации и исходный код после сборки. Для этого у Вас есть два варианта:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>При сборке используйте опцию  <code>--recompile</code> вместо <code>--rebuild</code>.</p>
+</li>
+<li>
+<p>Установите SRPMS с помощью следующих команд:</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -Uvh ~/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
+Updating / installing...
+   1:bello-0.1-1.el7                  ################################# [100%]
+
+$ rpm -Uvh ~/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
+Updating / installing...
+   1:pello-0.1.1-1.el7                ################################# [100%]
+
+$ rpm -Uvh ~/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm
+Updating / installing...
+   1:cello-1.0-1.el7                  ################################# [100%]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В этом руководстве выполните приведенные выше команды <code>rpm -Uvh</code> чтобы продолжить взаимодействие с файлами спецификаций и исходными кодами.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="build-binary">Создание бинарного файла из SPEC файла</h5>
+<div class="paragraph">
+<p>Чтобы собрать <code>bello</code>, <code>pello</code>, и <code>cello</code> из их SPEC файлов, запустите:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -bb ~/rpmbuild/SPECS/bello.spec
+
+$ rpmbuild -bb ~/rpmbuild/SPECS/pello.spec
+
+$ rpmbuild -bb ~/rpmbuild/SPECS/cello.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Теперь Вы собрали RPM из SPEC файлов.</p>
+</div>
+<div class="paragraph">
+<p>Большая часть информации, содержащейся в разделе <a href="#rebuild">Восстановление из исходного RPM</a> применима здесь.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hello-world">Ваш Первый пакет RPM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Создание пакета RPM может быть сложным. Вот полный рабочий файл спецификации RPM, в котором несколько вещей пропущены и упрощены.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">Name:       hello-world
+Version:    1
+Release:    1
+Summary:    Most simple RPM package
+License:    FIXME
+
+%description
+This is my first RPM package, which does nothing.
+
+%prep
+# we have no source, so nothing here
+
+%build
+cat &gt; hello-world.sh &lt;&lt;EOF
+#!/usr/bin/bash
+echo Hello world
+EOF
+
+%install
+mkdir -p %{buildroot}/usr/bin/
+install -m 755 hello-world.sh %{buildroot}/usr/bin/hello-world.sh
+
+%files
+/usr/bin/hello-world.sh
+
+%changelog
+# let's skip this for now</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Сохраните этот файл как <code>hello-world.spec</code>.</p>
+</div>
+<div class="paragraph">
+<p>Теперь используйте эти команды:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmdev-setuptree
+$ rpmbuild -ba hello-world.spec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Команда <code>rpmdev-setuptree</code> создает несколько рабочих каталогов. Поскольку эти каталоги постоянно хранятся в $HOME, эту команду не нужно использовать снова.</p>
+</div>
+<div class="paragraph">
+<p>Команда  <code>rpmbuild</code> создает фактический пакет rpm. Вывод этой команды может быть похож на:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="txt">... [SNIP]
+Wrote: /home/mirek/rpmbuild/SRPMS/hello-world-1-1.src.rpm
+Wrote: /home/mirek/rpmbuild/RPMS/x86_64/hello-world-1-1.x86_64.rpm
+Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.wgaJzv
++ umask 022
++ cd /home/mirek/rpmbuild/BUILD
++ /usr/bin/rm -rf /home/mirek/rpmbuild/BUILDROOT/hello-world-1-1.x86_64
++ exit 0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Файл <code>/home/mirek/rpmbuild/RPMS/x86_64/hello-world-1-1.x86_64.rpm</code> является Вашим первым пакетом RPM. Его можно установить в систему и протестировать.</p>
+</div>
+<div class="sect3">
+<h4 id="rpm-macros">RPM Макросы</h4>
+<div class="paragraph">
+<p><a href="https://rpm-software-management.github.io/rpm/manual/macros.html">Макрос RPM</a> - это прямая замена текста, которая может быть условно назначена на основе необязательной оценки оператора при использовании определенной встроенной функциональности. Это означает, что Вы можете заставить RPM выполнять замены текста за Вас.</p>
+</div>
+<div class="paragraph">
+<p>Это полезно, например, при многократной ссылке на <em>Version</em> упакованного программного обеспечения в файле спецификации. Вы определяете <em>Version</em> только один раз - в макросе <code>%{version}</code>. Затем используйте <code>%{version}</code> во всем файле спецификации. Каждый раз, во время определения строки <code>%{version}</code>, в конечном итоге будет подставлена <em>Version</em> программы, которую вы определили ранее.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Если Вы видите незнакомый макрос, Вы можете узнать о нём с помощью:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{_MACRO}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Например:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{_bindir}
+/usr/bin
+
+$ rpm --eval %{_libexecdir}
+/usr/libexec</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Распространённым макросом является <code>%{?dist}</code>, который обозначает “тег распространения”. Он сигнализирует, какой дистрибутив используется для сборки.</p>
+</div>
+<div class="paragraph">
+<p>Например:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># On a RHEL 7.x machine
+$ rpm --eval %{?dist}
+.el7
+
+# On a Fedora 23 machine
+$ rpm --eval %{?dist}
+.fc23</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Больше информации о макросах см. в разделе <a href="#more-on-macros">Подробнее о макросах</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="patching-software">Программное обеспечение для исправления ошибок</h3>
+<div class="paragraph">
+<p><strong>Patch</strong> - это исходный код, который исправляет другой исходный код. Он отформатирован как <em>diff</em>, потому что представляет разницу между двумя версиями текста. Разница создаётся с помощью утилиты <code>diff</code>, которая затем применяется к исходному коду с помощью утилиты <a href="http://savannah.gnu.org/projects/patch/">patch</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Разработчики программного обеспечения часто используют системы контроля версий, такие как <a href="https://git-scm.com/">git</a>, для управления своей кодовой базой. Такие инструменты предоставляют свои собственные методы создания различий или исправления программного обеспечения.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>В следующем примере мы создаем исправление из исходного кода с помощью
+<code>diff</code>, а затем используем <code>patch</code>. Исправление использует в следующих разделах при создании RPM и работе со .spec-файлом. <a href="#working-with-spec-files">Работа со SPEC файлами</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="putting-source-code-into-tarball">Создание Tarball с исходным кодом</h3>
+<div class="paragraph">
+<p>В приведенных ниже примерах мы помещаем каждую из трех программ  <code>Hello World</code> в архив, сжатый с помощью
+<a href="https://www.gnu.org/software/gzip/">gzip</a>. Программное обеспечение часто выпускается таким образом, чтобы позже быть упакованным для распространения.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using_Make">Make</h3>
+
+</div>
+<div class="sect2">
+<h3 id="version-control-systems">Система контроля версий</h3>
+<div class="paragraph">
+<p>При работе с RPMs желательно использовать
+<a href="https://en.wikipedia.org/wiki/Version_control">Системы контроля версий</a> (VCS), такую как <a href="https://git-scm.com/">git</a>, для управления компонентами программного обеспечения, которое мы упаковываем.
+Следует отметить, что хранение бинарных файлов в системе контроля версий нецелесообразно, поскольку это резко увеличивает размер исходного репозитория, поскольку эти инструменты разработаны для обработки различий в файлах (часто оптимизированных для текстовых файлов), чему не поддаются бинарные файлы, поэтому обычно сохраняется весь бинарные файл целиком. Существуют некоторые утилиты, популярные среди upstream проектов с открытым исходным кодом, которые решают эту проблему, либо сохраняя SPEC файл, где исходный код находится в VCS (т. е. - он не находится в сжатом архиве для распространения ), либо помещая в VCS только SPEC-файл и патчи и загружается сжатый архив updtream исходного кода  в так называемый «кэш просмотра».</p>
+</div>
+<div class="paragraph">
+<p>В этом разделе мы рассмотрим два различных варианта использования системы контроля версий
+<a href="https://git-scm.com/">git</a> для управления содержимым, которое в конечном итоге будет преобразовано в пакет RPM. Первый называется <a href="https://github.com/dgoodwin/tito">tito</a>,
+второй - <a href="https://github.com/release-engineering/dist-git">dist-git</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Вам нужно будет установить пакет <code>git</code> в Вашу систему, он понадобится нам для изучения данного раздела.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Gear_ALT">Окружение Gear</h3>
+
+</div>
+<div class="sect2">
+<h3 id="Hasher_ALT">Окружение Hasher</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="advanced-topics">Дополнительные материалы</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>В этой главе рассматриваются темы, которые выходят за рамки вводного руководства, но часто полезны в реальной упаковке RPM.</p>
+</div>
+<div class="sect2">
+<h3 id="Signing-Packages">Подпись пакетов</h3>
+<div class="paragraph">
+<p>Подпись пакета - это способ защитить пакет для конечного пользователя. Безопасная транспортировка может быть достигнута с помощью реализации протокола HTTPS. Такой метод используют, когда пакет загружается непосредственно перед установкой. Однако пакеты часто загружаются заранее и хранятся в локальных репозиториях перед их использованием. Пакеты подписываются, чтобы гарантировать, что никакая третья сторона не сможет изменить содержимое пакета.</p>
+</div>
+<div class="paragraph">
+<p>Существует три способа подписи пакета:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#Adding-a-Signature-to-a-Package">Добавление подписи к уже существующему пакету</a>.</p>
+</li>
+<li>
+<p><a href="#Replacing-a-Package-Signature">Замена подписи на уже существующем пакете</a>.</p>
+</li>
+<li>
+<p><a href="#Build-time-Signing">
+Подпись пакета во время сборки</a>.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="Adding-a-Signature-to-a-Package">Добавление подписи к пакету</h4>
+<div class="paragraph">
+<p>В большинстве случаев пакеты создаются без подписи. Подпись добавляется непосредственно перед выпуском пакета.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы добавить другую подпись к пакету, используйте опцию <code>--addsign</code>. Наличие более чем одной подписи позволяет зафиксировать путь владения пакетом от разработчика пакета до конечного пользователя.</p>
+</div>
+<div class="paragraph">
+<p>В качестве примера подразделение компании создает пакет и подписывает его ключом подразделения. Затем штаб-квартира компании проверяет подпись пакета и добавляет корпоративную подпись к пакету, заявляя, что подписанный пакет является подлинным.</p>
+</div>
+<div class="paragraph">
+<p>С двумя подписями пакеи попадает к продавцу. Продавец проверяет подписи и, если они проверяются, также добавляет свою подпись.</p>
+</div>
+<div class="paragraph">
+<p>Теперь пакет отправляется в компанию, которая желает его развернуть. Проверив каждую подпись на упаковке, они знают, что это подлинная копия, не изменившаяся с момента её первого создания. В зависимости от внутреннего контроля внедряющей компании, они могут добавить свою собственную подпись, чтобы заверить своих сотрудников в том, что пакет получил их корпоративное одобрение.</p>
+</div>
+<div class="paragraph">
+<p>Вывод из команды <code>--addsign</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --addsign blather-7.9-1.i386.rpm
+            Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Для проверки подписей пакета с несколькими подписями:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --checksig blather-7.9-1.i386.rpm
+blather-7.9-1.i386.rpm: size pgp pgp md5 OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Два обозначения <code>pgp</code> в выходных данных команды <code>rpm --checksig</code> показывают, что пакет был подписан дважды.</p>
+</div>
+<div class="paragraph">
+<p>RPM позволяет добавлять одну и ту же подпись несколько раз. Параметр <code>--addsign</code>
+не проверяет наличие нескольких идентичных подписей.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --addsig blather-7.9-1.i386.rpm
+              Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:
+$ rpm --addsig blather-7.9-1.i386.rpm
+              Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:
+$ rpm --addsig blather-7.9-1.i386.rpm
+              Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:
+$ rpm --checksig blather-7.9-1.i386.rpm
+blather-7.9-1.i386.rpm: size pgp pgp pgp pgp md5 OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>На выходе команды <code>rpm --checksig</code> отображается четыре подписи.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="Replacing-a-Package-Signature">Замена подписи пакета</h4>
+<div class="paragraph">
+<p>Чтобы изменить открытый ключ без необходимости пересобирать каждый пакет, используйте опцию <code>--resign</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --resign blather-7.9-1.i386.rpm
+            Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Использование опции <code>--resign</code> с несколькими пакетами:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --resign b*.rpm
+            Enter pass phrase:
+
+Pass phrase is good.
+blather-7.9-1.i386.rpm:
+bother-3.5-1.i386.rpm:</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="Build-time-Signing">Подпись во время сборки</h4>
+<div class="paragraph">
+<p>Чтобы подписать пакет во время сборки, используйте команду <code>rpmbuild</code> с параметром <code>--sign</code>. Для этого необходимо ввести кодовую фразу PGP.</p>
+</div>
+<div class="paragraph">
+<p>Для примера:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -ba --sign blather-7.9.spec
+            Enter pass phrase:
+
+Pass phrase is good.
+* Package: blather
+…
+Binary Packaging: blather-7.9-1
+Finding dependencies...
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/RPMS/i386/blather-7.9-1.i386.rpm
+…
+Source Packaging: blather-7.9-1
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/SRPMS/blather-7.9-1.src.rpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Сообщение "Generating signature" появляется как в бинарном, так и в исходном разделах упаковки. Число, следующее за сообщением, указывает на то, что добавленная подпись была создана с использованием  PGP.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>При использовании опции <code>--sign</code> в <code>rpmbuild</code>, используйте только аргументы <code>-bb</code> или <code>-ba</code> для сборки пакета. Аргумент <code>-ba</code> обозначает сборку бинарных <strong>и</strong> исходных пакетов.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Чтобы проверить подпись пакета, используйте комманду <code>--checksig</code>. Для примера:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --checksig blather-7.9-1.i386.rpm
+blather-7.9-1.i386.rpm: size pgp md5 OK</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="Building-Multiple-Packages">Сборка нескольких пакетов</h5>
+<div class="paragraph">
+<p>При сборке нескольких пакетов используйте следующий синтаксис, чтобы избежать многократного ввода кодовой фразы
+PGP. Например, при сборке пакетов <code>blather</code> и <code>bother</code>, подпишите их, следуя примеру ниже:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -ba --sign b*.spec
+              Enter pass phrase:
+
+Pass phrase is good.
+* Package: blather
+…
+Binary Packaging: blather-7.9-1
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/RPMS/i386/blather-7.9-1.i386.rpm
+…
+Source Packaging: blather-7.9-1
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/SRPMS/blather-7.9-1.src.rpm
+…
+* Package: bother
+…
+Binary Packaging: bother-3.5-1
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/RPMS/i386/bother-3.5-1.i386.rpm
+…
+Source Packaging: bother-3.5-1
+…
+Generating signature: 1002
+Wrote: /usr/src/redhat/SRPMS/bother-3.5-1.src.rpm</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="more-on-macros">Подробнее о макросах</h3>
+<div class="paragraph">
+<p>Существует множество встроенных макросов RPM, и мы рассмотрим некоторые из них в следующем разделе, однако исчерпывающий список можно найти на странице
+<a href="https://rpm-software-management.github.io/rpm/manual/macros.html">RPM Official Documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>Существуют также макросы, предоставляемые Вашим дистрибутивом
+<a href="https://en.wikipedia.org/wiki/Linux">Linux</a>, в этом разделе мы рассмотрим некоторые из них, предоставляемые <a href="https://getfedora.org/">Fedora</a>,
+<a href="https://www.centos.org/">CentOS</a> и
+<a href="https://www.redhat.com/en/technologies/linux-platforms">RHEL</a>, а также предоставим информацию о том, как проверить Вашу систему, чтобы узнать о других, которые мы не рассматриваем, или для их обнаружения в других дистрибутивах Linux на основе RPM</p>
+</div>
+<div class="sect3">
+<h4 id="defining-your-own">Определение Ваших Собственных Макросов</h4>
+<div class="paragraph">
+<p>Вы можете определить свои собственные макросы. Ниже приводится выдержка из
+<a href="https://rpm-software-management.github.io/rpm/manual/macros.html">RPM Official Documentation</a>,  в которой содержится исчерпывающая информация о возможностях макросов.</p>
+</div>
+<div class="paragraph">
+<p>Чтобы определить макрос, используйте:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">%global &lt;name&gt;[(opts)] &lt;body&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Все пробелы, окружающие  <code>\ </code>, удаляются.  Имя может состоять из буквенно-цифровых символов и символа <code>_</code>,  и должно иметь длину не менее 3 символов. Макрос без поля <code>(opts)</code> является “простым” в том смысле, что выполняется только рекурсивное расширение макроса. Параметризованный макрос содержит поле <code>(opts)</code> field. The
+<code>opts</code> - (строка в круглых скобках) передается точно так же, как и в getopt(3)  для обработки
+argc/argv  в начале вызова макроса.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Более старый SPEC файлы RPM могут использовать шаблон макроса <code>%define &lt;name&gt; &lt;body&gt;</code>. Различия между макросами <code>%define</code> и <code>%global</code> заключаются в следующем:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>%define</code> имеет локальную область действия, что означает, что он применяется только к указанной части SPEC файла. Кроме того, тело макроса  <code>%define</code> расширяется при использовании.</p>
+</li>
+<li>
+<p><code>%global</code> имеет глобальную область действия, что означает, что он применяется ко всему SPEC файлу.
+Кроме того, тело макроса <code>%global</code> асширяется во время определения.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Пример:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>%global githash 0ec4e58
+%global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+Макросы всегда оцениваются, даже в комментариях. Иногда это безобидно. Но во втором примере мы выполняем команду python, чтобы получить содержимое макроса. Эта команда будет выполняться даже тогда, когда Вы закомментируете макрос, или когда Вы вводите имя макроса в %changelog. Чтобы закомментировать макрос, используйте
+<code>%%</code>. Например: <code>%%global</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="setup">%setup</h4>
+<div class="paragraph">
+<p>Макрос  <code>%setup</code> можно использовать для сборки пакета с помощью tarball.
+Стандартное поведение макроса <code>%setup</code> можно увидеть в выходных данных <code>rpmbuild</code>.
+В начале каждой фазы макрос выводит <code>Executing(%something)</code>.
+Например:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.DhddsG</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Выходные данные оболочки устанавливаются с включенным <code>set -x</code>. Чтобы просмотреть содержимое
+<code>/var/tmp/rpm-tmp.DhddsG</code>, используйте опцию <code>--debug</code>, поскольку <code>rpmbuild</code> удаляет временные файлы после успешной сборки. Здесь отображается настройка переменных среды, например:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">cd '/builddir/build/BUILD'
+rm -rf 'cello-1.0'
+/usr/bin/gzip -dc '/builddir/build/SOURCES/cello-1.0.tar.gz' | /usr/bin/tar -xof -
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+  exit $STATUS
+fi
+cd 'cello-1.0'
+/usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Макрос <code>%setup</code> гарантирует, что мы работаем в правильном каталоге, удаляет остатки предыдущих сборок, распаковывает исходный архив и устанавливает некоторые привилегии по умолчанию. Существует несколько вариантов настройки поведения макроса
+<code>%setup</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="setup-q">%setup -q</h5>
+<div class="paragraph">
+<p>Параметр <code>-q</code>  ограничивает детализацию макроса  <code>%setup</code>. Вместо <code>tar -xof</code> выполняется только <code>tar -xvvof</code>. Этот параметр должен быть использован в качестве первого.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="setup-n">%setup -n</h5>
+<div class="paragraph">
+<p>В некоторых случаях каталог из расширенного архива имеет другое имя, чем ожидалось <code>%{name}-%{version}</code>. Это может привести к ошибке макроса <code>%setup</code>.  Имя каталога должно быть указано параметром <code>-n directory_name</code>.</p>
+</div>
+<div class="paragraph">
+<p>Например, если имя пакета  <code>cello</code>, но исходный код заархивирован в <code>hello-1.0.tgz</code> и содержит каталог <code>hello/</code>, содержимое SPEC файла должно быть следующим:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">Name: cello
+Source0: https://example.com/%{name}/release/hello-%{version}.tar.gz
+…
+%prep
+%setup -n hello</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="setup-c">%setup -c</h5>
+<div class="paragraph">
+<p>Параметр  <code>-c</code> можно использовать, если архив исходного кода не содержит никаких подкаталогов и после распаковки файлы из архива заполняют текущий каталог. Опция <code>-c</code> создает каталог и переходит к расширению архива. Наглядный пример:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">/usr/bin/mkdir -p cello-1.0
+cd 'cello-1.0'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Каталог не изменяется после расширения архива.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="setup-dt">%setup -D и -T</h5>
+<div class="paragraph">
+<p>Параметр <code>-D</code>  отключает удаление каталога исходного кода. Этот параметр полезен, если макрос <code>%setup</code> используется несколько раз. По сути, параметр <code>-D</code> означает, что сделующие строки не используются:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">rm -rf 'cello-1.0'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Параметр<code>-T</code> отключает расширение хранилища исходного кода, удаляя следующую строку из скрипта:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">/usr/bin/gzip -dc '/builddir/build/SOURCES/cello-1.0.tar.gz' | /usr/bin/tar -xvvof -</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="setup-ab">%setup -a и -b</h5>
+<div class="paragraph">
+<p>Параметры <code>-a</code> и <code>-b</code> расширяют определённые источники.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Параметр <code>-b</code> (расшифровывается как <code>before</code>) расширяет определенные источники перед входом в рабочий каталог.</p>
+</li>
+<li>
+<p>Параметр <code>-a</code> (расшифровывается как  <code>after</code>) расширяет эти источники после входа. Их аргументами являются исходные номера из преамбулы файла спецификации.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Например, допустим, что архив <code>cello-1.0.tar.gz</code> содержит пустой каталог <code>examples</code>, и примеры поставляются в отдельных
+<code>examples.tar.gz</code> tarball архивах, и они разархивируются в каталог с тем же именем. В этом случае используйте <code>-a 1</code>, так как мы хотим разархивировать <code>Source1</code> после входа в рабочий каталог:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">Source0: https://example.com/%{name}/release/%{name}-%{version}.tar.gz
+Source1: examples.tar.gz
+…
+%prep
+%setup -a 1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Но если бы примеры были в отдельном <code>cello-1.0-examples.tar.gz</code> tarball архиве, который расширяется до <code>cello-1.0/examples</code>, используйте параметры <code>-b 1</code>, поскольку <code>Source1</code> должен быть разархивирован перед входом в рабочий каталог:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">Source0: https://example.com/%{name}/release/%{name}-%{version}.tar.gz
+Source1: %{name}-%{version}-examples.tar.gz
+…
+%prep
+%setup -b 1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Вы также можете использовать комбинацию всех этих опций.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="files">%files</h4>
+<div class="paragraph">
+<p>Общие  “расширенные” макросы RPM, необходимые в разделе <code>%files</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%license</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос идентифицирует файл, указанный в списке, как файл ЛИЦЕНЗИИ, и он будет установлен и помечен как таковой RPM. Пример: <code>%license LICENSE</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%doc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Этот макрос идентифицирует файл, указанный как документация, и он будет установлен и помечен RPM как таковой. Это часто используется не только для документации об упаковываемом программном обеспечении, но и для примеров кода и различных элементов, которые должны сопровождать документацию. Пример: <code>%doc README</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%dir</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Макрос указывает, что путь является каталогом, которым должен владеть этот RPM. Это важно, чтобы манифест RPM-файла точно знал, какие каталоги очищать при удалении. Пример: <code>%dir %{_libdir}/%{name}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">%config(noreplace)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Указывает, что следующий файл является файлом конфигурации и поэтому не должен перезаписываться (или заменяться) при установке или обновлении пакета, если файл был изменен по сравнению с исходной контрольной установкой. В случае внесения изменений файл будет создан с добавлением <code>.rpmnew</code> в конец имени файла при обновлении или установке, чтобы ранее существующий или измененный файл в целевой системе не был изменен. Пример: <code>%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="built-in-macros">Встроенные макросы</h4>
+<div class="paragraph">
+<p>В Вашей системе есть много встроенных макросов RPM, и самый быстрый способ просмотреть их все - это просто выполнить команду <code>rpm --showrc</code>. Обратите внимание, что это будет содержать много выходных данных, поэтому его часто используют в сочетании с каналом для <code>grep</code>.</p>
+</div>
+<div class="paragraph">
+<p>Вы также можете найти информацию о макросах RPM, которые поставляются непосредственно с версией RPM Вашей системы, просмотрев выходные данные   <code>rpm -ql rpm</code> , обратив внимание на файлы с названием <code>macros</code> в структуре каталогов.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rpm-distribution-macros">RPM Макросы, предоставляемые дистрибутивом</h4>
+<div class="paragraph">
+<p>Различные дистрибутивы будут предоставлять разные наборы рекомендуемых макросов RPM в зависимости от языковой реализации упаковываемого программного обеспечения или конкретных рекомендаций рассматриваемого дистрибутива.</p>
+</div>
+<div class="paragraph">
+<p>Они часто предоставляются в виде самих пакетов RPM и могут быть установлены с помощью пакетного менеджера, такого как <a href="http://yum.baseurl.org/">yum</a> или
+<a href="https://github.com/rpm-software-management/dnf">dnf</a>. Сами файлы макросов после установки можно найти в <code>/usr/lib/rpm/macros.d/</code>, и они будут включены в вывод <code>rpm --showrc</code> по умолчанию после установки.</p>
+</div>
+<div class="paragraph">
+<p>Одним из основных примеров этого является раздел
+<a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/">Fedora Packaging
+Guidelines</a>, относящийся конкретно к
+<a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/_domain_specific_guidelines">Application
+Specific Guidelines</a>, который на момент написания этой статьи содержит более 60 различных наборов руководств вместе с соответствующими наборами макросов RPM для упаковки.</p>
+</div>
+<div class="paragraph">
+<p>Одним из примеров такого рода RPM может быть <a href="https://www.python.org/">Python</a>
+версии 2.x, и если у нас установлен пакет <code>python2-rpm-macros</code>
+(доступный в EPEL для RHEL 7 и CentOS 7), у нас есть ряд доступных, специфичных для python2 макросов.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -ql python2-rpm-macros
+/usr/lib/rpm/macros.d/macros.python2
+
+$ rpm --showrc | grep python2
+-14: __python2  /usr/bin/python2
+CFLAGS="%{optflags}" %{__python2} %{py_setup} %{?py_setup_args} build --executable="%{__python2} %{py2_shbang_opts}" %{?1}
+CFLAGS="%{optflags}" %{__python2} %{py_setup} %{?py_setup_args} install -O1 --skip-build --root %{buildroot} %{?1}
+-14: python2_sitearch   %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+-14: python2_sitelib    %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+-14: python2_version    %(%{__python2} -c "import sys; sys.stdout.write('{0.major}.{0.minor}'.format(sys.version_info))")
+-14: python2_version_nodots     %(%{__python2} -c "import sys; sys.stdout.write('{0.major}{0.minor}'.format(sys.version_info))")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>В приведенном выше выводе отображаются необработанные определения макросов RPM, но нас, вероятно, больше интересует, что мы можем сделать с помощью <code>rpm --eval</code> , чтобы определить, что они делают, а также как они могут быть полезны для нас при упаковке RPMs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --eval %{__python2}
+/usr/bin/python2
+
+$ rpm --eval %{python2_sitearch}
+/usr/lib64/python2.7/site-packages
+
+$ rpm --eval %{python2_sitelib}
+/usr/lib/python2.7/site-packages
+
+$ rpm --eval %{python2_version}
+2.7
+
+$ rpm --eval %{python2_version_nodots}
+27</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="custom-macros">Пользовательские макросы</h3>
+<div class="paragraph">
+<p>Вы можете переопределить макросы в файле <code>~/.rpmmacros</code>. Любые внесенные вами изменения повлияют на каждую сборку на Вашем компьютере.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Существует несколько макросов, которые Вы можете использовать для переопределения</dt>
+<dt class="hdlist1"><code>%_topdir /opt/some/working/directory/rpmbuild</code></dt>
+<dd>
+<p>Вы можете создать этот каталог, включая все подкаталоги, с помощью утилиты <code>rpmdev-setuptree</code>.
+Значение этого макроса по умолчанию равно<code>~/rpmbuild</code>.</p>
+</dd>
+<dt class="hdlist1"><code>%_smp_mflags -l3</code></dt>
+<dd>
+<p>Этот макрос часто используется для передачи в Makefile, например:
+<code>make %{?_smp_mflags}</code>, и для задания количества одновременных процессов на этапе сборки. По умолчанию для него задано значение <code>-jX</code>, где X - количество ядер. Если Вы измените количество ядер, Вы можете ускорить или замедлить сборку пакетов.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Хотя Вы можете определить любые новые макросы в файле <code>~/.rpmmacros</code>  это не рекомендуется, поскольку эти макросы не будут присутствовать на других компьютерах, где пользователи могут захотеть попытаться пересобрать Ваш пакет.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="epoch-scriptlets-and-triggers">Epoch, Скриптлеты и Триггеры</h3>
+<div class="paragraph">
+<p>В мире SPEC файлов RPM существуют различные разделы, которые считаются продвинутыми, поскольку они влияют не только на файл спецификации, способ сборки пакета, но и на конечный компьютер, на который устанавливается результирующий RPM. В этом разделе мы рассмотрим наиболее распространенные из них, такие как Epoch, Скриптлеты и триггеры.</p>
+</div>
+<div class="sect3">
+<h4 id="epoch">Epoch</h4>
+<div class="paragraph">
+<p>Первым в списке стоит <code>Epoch</code>, epoch - это способ определения взвешенных зависимостей на основе номеров версий. Его значение по умолчанию равно 0, если директива <code>Epoch</code>  не указана в SPEC файле. Это не рассматривалось в разделе "SPEC файл" этого руководства, потому что почти всегда вводить значени Epoch  - плохая идея, поскольку это искажает то, что вы обычно ожидаете от RPM при сравнении версий пакетов.</p>
+</div>
+<div class="paragraph">
+<p>Например, если был установлен пакет <code>foobar</code> с <code>Epoch: 1</code> и <code>Version: 1.0</code>, а кто-то другой упаковал <code>foobar</code> с<code>Version: 2.0</code> , но просто опустил директиву <code>Epoch</code> либо потому, что они не знали о её необходимости, либо просто забыли, эта новая версия никогда не будет считаться обновлением, потому что версия Epoch превалирует над традиционным маркером
+Name-Version-Release, который означает управление версиями для RPM-пакетов.</p>
+</div>
+<div class="paragraph">
+<p>Этот подход обычно используется только в случае крайней необходимости для решения проблемы с порядком обновления, которая может возникнуть как побочный эффект программного обеспечения из upstream репозитория, изменяющего схемы нумерации версий или версии, включающие буквенные символы, которые не всегда можно надёжно сравнить на основе кодирование.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="triggers-and-scriptlets">Скриптлеты и Триггеры</h4>
+<div class="paragraph">
+<p>В пакетах RPM существует ряд директив, которые можно использовать для внесения необходимых или желаемых изменений в систему во время установки RPM. Они называются <strong>скриптлеты</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Один из основных примеров того, когда и почему Вы хотели бы это сделать,  это когда установлена системная служба RPM и она предоставляет
+<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
+<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">файл</a>.
+Во время установки нам нужно будет уведомить
+<a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>  о появлении нового модуля, чтобы системный администратор мог выполнить команду, аналогичную  <code>systemctl start
+foo.service</code> после установки вымышленного <code>foo</code> (который в этом примере предоставляет демон). Аналогично, нам нужно было бы отменить это действие при деинсталляции, чтобы администратор не получал ошибок из-за того, что бинарный файл демона больше не установлен, но файл модуля все еще существует в запущенной конфигурации systemd.</p>
+</div>
+<div class="paragraph">
+<p>Существует небольшая горстка распространенных скриптлетов, они похожи на “заголовки разделов”, такие как <code>%build</code> or <code>%install</code>, в том смысле, что они определяются многострочными сегментами кода, часто написанными, как стандартный сценарий оболочки
+<a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a>
+, но могут быть на нескольких разных языках программирования.
+Исчерпывающий список этих доступных языков можно найти в <em>Официальной документации RPM</em>.</p>
+</div>
+<div class="paragraph">
+<p>Следующие скриптлеты:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Директива</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Описание</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%pre</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед установкой пакета в целевую систему.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%post</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после установки пакета в целевой системе.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%preun</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется непосредственно перед удалением пакета из целевой системы.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>%postun</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Скриптлет, который выполняется сразу после удаления пакета из целевой системы.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Также часто для этой функции существуют макросы RPM.  В нашем предыдущем примере мы обсуждали необходимость получения  <a href="https://freedesktop.org/wiki/Software/systemd/">systemd</a>
+уведомления о новом
+<a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit file</a>,
+, это легко обрабатывается макросами скриптлетов systemd, как Мы можем видеть из приведенного ниже примера вывода.  Более подробную информацию об этом можно найти в
+<a href="https://fedoraproject.org/wiki/Packaging:Systemd">Fedora systemd Packaging
+Guidelines</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm --showrc | grep systemd
+-14: __transaction_systemd_inhibit      %{__plugindir}/systemd_inhibit.so
+-14: _journalcatalogdir /usr/lib/systemd/catalog
+-14: _presetdir /usr/lib/systemd/system-preset
+-14: _unitdir   /usr/lib/systemd/system
+-14: _userunitdir       /usr/lib/systemd/user
+/usr/lib/systemd/systemd-binfmt %{?*} &gt;/dev/null 2&gt;&amp;1 || :
+/usr/lib/systemd/systemd-sysctl %{?*} &gt;/dev/null 2&gt;&amp;1 || :
+-14: systemd_post
+-14: systemd_postun
+-14: systemd_postun_with_restart
+-14: systemd_preun
+-14: systemd_requires
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+-14: systemd_user_post  %systemd_post --user --global %{?*}
+-14: systemd_user_postun        %{nil}
+-14: systemd_user_postun_with_restart   %{nil}
+-14: systemd_user_preun
+systemd-sysusers %{?*} &gt;/dev/null 2&gt;&amp;1 || :
+echo %{?*} | systemd-sysusers - &gt;/dev/null 2&gt;&amp;1 || :
+systemd-tmpfiles --create %{?*} &gt;/dev/null 2&gt;&amp;1 || :
+
+$ rpm --eval %{systemd_post}
+
+if [ $1 -eq 1 ] ; then
+        # Initial installation
+        systemctl preset  &gt;/dev/null 2&gt;&amp;1 || :
+fi
+
+$ rpm --eval %{systemd_postun}
+
+systemctl daemon-reload &gt;/dev/null 2&gt;&amp;1 || :
+
+$ rpm --eval %{systemd_preun}
+
+if [ $1 -eq 0 ] ; then
+        # Package removal, not upgrade
+        systemctl --no-reload disable  &gt; /dev/null 2&gt;&amp;1 || :
+        systemctl stop  &gt; /dev/null 2&gt;&amp;1 || :
+fi</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Еще один элемент, который обеспечивает еще более детальный контроль над транзакцией RPM в целом, - это то, что известно как <strong>триггеры</strong>. По сути, это то же самое, что и скриптлет, но выполняется в очень определенном порядке операций во время транзакции установки или обновления RPM, что позволяет более точно контролировать весь процесс.</p>
+</div>
+<div class="paragraph">
+<p>Порядок, в котором выполняется каждый из них, и подробная информация о котором - приведена ниже.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">all-%pretrans
+...
+any-%triggerprein (%triggerprein from other packages set off by new install)
+new-%triggerprein
+new-%pre      for new version of package being installed
+...           (all new files are installed)
+new-%post     for new version of package being installed
+
+any-%triggerin (%triggerin from other packages set off by new install)
+new-%triggerin
+old-%triggerun
+any-%triggerun (%triggerun from other packages set off by old uninstall)
+
+old-%preun    for old version of package being removed
+...           (all old files are removed)
+old-%postun   for old version of package being removed
+
+old-%triggerpostun
+any-%triggerpostun (%triggerpostun from other packages set off by old un
+            install)
+...
+all-%posttrans</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Вышеуказанные элементы взяты из прилагаемой документации RPM, найденной в
+<code>/usr/share/doc/rpm/triggers</code> на системах Fedora и
+<code>/usr/share/doc/rpm-4.*/triggers</code> в системах RHEL 7 и CentOS 7.</p>
+</div>
+<div class="sect4">
+<h5 id="Using-Non-Shell-Scripts-in-spec-File">Использование скриптов без оболочки в SPEC файле</h5>
+<div class="paragraph">
+<p>Параметр скриптлета <code>-p</code>, в SPEC файле позволяет вызывать определенный интерпретатор вместо стандартного <code>-p&#160;/bin/sh</code>. Наглядным примером является скрипт, который выводит сообщение после установки <code>pello.py</code>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Откройте файл <code>pello.spec</code>.</p>
+</li>
+<li>
+<p>Найдите следующую строку:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">install -m 0644 %{name}.py* %{buildroot}/usr/lib/%{name}/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Под этой строкой вставьте следующий код:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="specfile">%post -p /usr/bin/python3
+print("This is {} code".format("python"))</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Создайте свой пакет в соответствии с главой <a href="#building-rpms">Сборка RPMS</a>.</p>
+</li>
+<li>
+<p>Установите Ваш пакет:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"># dnf install /home/&lt;username&gt;/rpmbuild/RPMS/noarch/pello-0.1.1-1.fc27.noarch.rpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Результатом выполнения этой команды является следующее сообщение после установки:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Installing       : pello-0.1.1-1.fc27.noarch                              1/1
+Running scriptlet: pello-0.1.1-1.fc27.noarch                              1/1
+This is python code</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Примечание</div>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Чтобы использовать скрипт  Python&#160;3: Напишите строку <code>%post -p /usr/bin/python3</code>  под строкой <code>install -m</code> in a SPEC file.</p>
+</li>
+<li>
+<p>Чтобы использовать скрипт Lua: Напишите строку <code>%post -p &lt;lua&gt;</code> под строкой
+<code>install&#160;-m</code> в SPEC файле.</p>
+</li>
+<li>
+<p>Таким образом, в SPEC файле может быть указан любой интерпретатор.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="rpm-conditionals">Условные обозначения RPM</h3>
+<div class="paragraph">
+<p>Условные обозначения RPM позволяют условно включать различные разделы SPEC файла.</p>
+</div>
+<div class="paragraph">
+<p>Чаще всего условные обозначения имеют дело с:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>разделами, относящимися к конкретной архитектуре</p>
+</li>
+<li>
+<p>разделами, относящимися к конкретной операционной системе</p>
+</li>
+<li>
+<p>проблемами совместимости между различными версиями операционных систем</p>
+</li>
+<li>
+<p>существованием и определением макросов</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_синтаксис_условий_rpm">Синтаксис условий RPM</h4>
+<div class="paragraph">
+<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%if expression
+...
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Если <em>expression</em> истинно, то выполните какое-нибудь действие, в другом случае выполните другое действие:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%if expression
+...
+%else
+...
+%endif</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_примеры_условий_rpm">Примеры условий RPM</h4>
+<div class="sect4">
+<h5 id="_обозначение_if">Обозначение <code>%if</code></h5>
+<div class="literalblock">
+<div class="content">
+<pre>%if 0%{?rhel} == 6
+sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' configure.in
+sed -i '/AS_FUNCTION_DESCRIBE/ s/^/#/' acinclude.m4
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это условие обрабатывает совместимость между  RHEL6 и другими операционными системами с точки зрения поддержки макроса AS_FUNCTION_DESCRIBE. Когда пакет создается для RHEL, определяется макрос <code>%rhel</code> , и он расширяется до версии RHEL. Если его значение равно 6, что означает, что пакет создан для RHEL 6, , то ссылки на
+AS_FUNCTION_DESCRIBE, который не поддерживается RHEL6,  удаляются из сценариев автоконфигурации.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%if 0%{?el6}
+%global ruby_sitearch %(ruby -rrbconfig -e 'puts Config::CONFIG["sitearchdir"]')
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это условие регулирует совместимость между Fedora версии 17 и новее и RHEL 6 с точки зрения поддержки макроса  <code>%ruby_sitearch</code> macro. Fedora версии 17 и никогда не определяет <code>%ruby_sitearch</code> по умолчанию, но RHEL6 не поддерживает этот макрос. Условие проверяет, является ли операционная система RHEL 6. Если это так,
+<code>%ruby_sitearch</code> определяется явно. Обратите внимание, что  <code>0%{?el6}</code> имеет то же значение, что и <code>0%{?rhel} == 6</code> из предыдущего примера, и он проверяет, построен ли пакет на RHEL 6.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%if 0%{?fedora} &gt;= 19
+%global with_rubypick 1
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это условие обрабатывает поддержку инструмента выбора ruby. Если операционная система Fedora версии 19 или новее, поддерживается rubypick.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%define ruby_archive %{name}-%{ruby_version}
+%if 0%{?milestone:1}%{?revision:1} != 0
+%define ruby_archive %{ruby_archive}-%{?milestone}%{?!milestone:%{?revision:r%{revision}}}
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Это условие обрабатывает определение макросов. Если заданы макросы <code>%milestone</code> или
+<code>%revision</code>, переопределяется макрос <code>%ruby_archive</code>, который определяет имя вышестоящего файла архива.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_специальные_варианты_обозначения_if">Специальные варианты обозначения <code>%if</code></h5>
+<div class="paragraph">
+<p>Условные обозначения <code>%ifarch</code>, <code>%ifnarch</code> и <code>%ifos</code> являются специализированными вариантами условных обозначений <code>%if</code>. Эти варианты обычно используются, поэтому у них есть свои собственные макросы.</p>
+</div>
+<div class="sect5">
+<h6 id="_обозначениеifarch">Обозначение`%ifarch`</h6>
+<div class="paragraph">
+<p>Условие <code>%ifarch</code> спользуется для начала блока SPEC файла, который зависит от архитектуры. За ним следует один или несколько спецификаторов архитектуры, каждый из которых разделен запятыми или пробелами.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%ifarch i386 sparc
+...
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Все содержимое SPEC файла между <code>%ifarch</code> и <code>%endif</code> обрабатывается только на 32-разрядных архитектурах AMD и Intel или системах на базе Sun SPARC.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_условное_обозначение_ifnarch">Условное обозначение <code>%ifnarch</code></h6>
+<div class="paragraph">
+<p>Условие <code>%ifnarch</code> имеет обратную логику, чем условие  <code>%ifarch</code>.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%ifnarch alpha
+...
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Все содержимое SPEC файла между <code>%ifnarch</code> и <code>%endif</code> обрабатывается только в том случае, если оно не выполняется в системе на основе Digital Alpha/AXP.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_условие_ifos">Условие <code>%ifos</code></h6>
+<div class="paragraph">
+<p>Условие <code>%ifos</code>  используется для управления обработкой на основе операционной системы сборки. За ним может следовать одно или несколько имен операционной системы.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%ifos linux
+...
+%endif</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Все содержимое SPEC файла между <code>%ifos</code> и <code>%endif</code> обрабатывается только в том случае, если сборка была выполнена в системе Linux.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_новые_возможности_rpm_в_rhel_7">Appendix A: Новые возможности RPM в RHEL 7</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Этот список документирует наиболее заметные изменения в упаковке RPM между Red Hat Enterprise Linux 6 и 7.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Добавлена новая команда <code>rpmkeys</code>, используемая для импорта связки ключей и проверки подписи.</p>
+</li>
+<li>
+<p>Добавлена новая команда <code>rpmspec</code>, используемая для запросов спецификаций и анализируемых выходных данных.</p>
+</li>
+<li>
+<p>Добавлена новая команда <code>rpmsign</code>,  используемая для подписи пакета.</p>
+</li>
+<li>
+<p>Расширения  <code>posix.exec()</code>  и <code>os.exit()</code> встроенные в  <code>%{lua:&#8230;&#8203;}</code>
+скрипты, завершают работу скрипта с ошибкой, если они не вызываются из дочернего процесса, созданного с помощью скриптлета
+<code>posix.fork()</code>.</p>
+</li>
+<li>
+<p>Сбой скриптлета <code>%pretrans</code>  приводит к пропуску установки пакета</p>
+</li>
+<li>
+<p>Скриптлеты могут быть развернуты макросом и развернуты в формате запроса во время выполнения</p>
+</li>
+<li>
+<p>Зависимости скриптлетов до транзакции и после транзакции теперь могут быть правильно выражены с помощью  <code>Requires(pretrans)</code> , <code>Requires(posttrans)</code> и
+скриптлетов.</p>
+</li>
+<li>
+<p>Добавлен тег <code>OrderWithRequires</code>  для предоставления дополнительных подсказок. Тег следует синтаксису тега  <code>Requires</code>, но не создает фактических зависимостей. Подсказки по порядку обрабатываются так, как если бы они были <code>Requires</code> при расчете порядка транзакции, только если задействованные пакеты присутствуют в одной и той же транзакции.</p>
+</li>
+<li>
+<p>The <code>%license</code>. Этот флаг можно использовать в разделе <code>%files`. Можно использовать аналогично флагу </code>%doc<code> для пометки файлов как лицензий, которые необходимо установить, несмотря на параметр </code>--nodocs``.</p>
+</li>
+<li>
+<p>Добавлен макрос <code>%autosetup</code> для автоматизации применения исправлений с дополнительной интеграцией с распределенной системой контроля версий.</p>
+</li>
+<li>
+<p>Автоматический генератор зависимостей был переписан в расширяемую и настраиваемую систему на основе правил со встроенной фильтрацией.</p>
+</li>
+<li>
+<p>Открытые ключи OpenPGP V3 больше не поддерживаются.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ссылки_на_источники">Appendix B: Ссылки на источники</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ниже приведены ссылки на различные темы, представляющие интерес для RPM, упаковки RPM и сборки RPM. Некоторые из них являются продвинутыми и выходят далеко за рамки вводного материала, включённого в данное руководство.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://www.softwarecollections.org/en/">Software Collections</a> -
+SoftwareCollections.org это проект с открытым исходным кодом для создания и распространения поддерживаемых сообществом коллекций программного обеспечения (SCL) для Red Hat Enterprise Linux,
+Fedora, CentOS, и Scientific Linux.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://docs.fedoraproject.org/en-US/quick-docs/creating-rpm-packages/index.html">Creating
+RPM package</a> - Пошаговое руководство по изучению основ упаковки RPM.</p>
+</div>
+<div class="paragraph">
+<p><a href="http://www.ibm.com/developerworks/library/l-rpm1/">Packaging software with
+RPM, Part 1</a>, <a href="http://www.ibm.com/developerworks/library/l-rpm2/">Part 2</a>,
+<a href="http://www.ibm.com/developerworks/library/l-rpm3/">Part 3</a> -
+Руководство по упаковке IBM RPM.</p>
+</div>
+<div class="paragraph">
+<p><a href="http://rpm.org/documentation">RPM Documentation</a> -
+Официальная документация RPM.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://docs.fedoraproject.org/en-US/packaging-guidelines/">Fedora Packaging
+Guidelines</a> -
+Официальные рекомендации по упаковке для Fedora, полезные для всех дистрибутивов на основе RPM.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://pagure.io/rpmfluff">rpmfluff</a> - библиотека python для создания пакетов RPM и их саботажа, чтобы они были взломаны контролируемыми способами.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_выражение_благодарности">Appendix C: Выражение благодарности</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Некоторые фрагменты этого текста впервые появились в
+<a href="https://rpm-packaging-guide.github.io/">RPM Packaging Guide</a>. Copyright
+&copy; 2020 Adam Miller and others. Лицензировано в соответствии с
+<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
+Attribution-ShareAlike 3.0 Unported License</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-09-16 00:40:02 +0400
+</div>
+</div>
+</body>
+</html>

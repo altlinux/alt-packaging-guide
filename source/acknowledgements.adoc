@@ -1,0 +1,8 @@
+[appendix]
+= Выражение благодарности
+
+Некоторые фрагменты этого текста впервые появились в
+link:https://rpm-packaging-guide.github.io/[RPM Packaging Guide]. Copyright
+&copy; 2020 Adam Miller and others. Лицензировано в соответствии с
+link:http://creativecommons.org/licenses/by-sa/3.0/[Creative Commons
+Attribution-ShareAlike 3.0 Unported License].

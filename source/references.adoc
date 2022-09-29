@@ -1,0 +1,45 @@
+[appendix]
+= Ссылки на источники
+
+Ниже приведены ссылки на различные темы, представляющие интерес для RPM, упаковки RPM и сборки RPM. Некоторые из них являются продвинутыми и выходят далеко за рамки вводного материала, включённого в данное руководство.
+
+ifdef::rhel[]
+
+link:https://developers.redhat.com/products/softwarecollections/overview/[Red
+Hat Software Collections Overview] - Red Hat Software Collections предоставляет постоянно обновляемые инструменты разработки в последних стабильных версиях.
+
+link:https://access.redhat.com/documentation/en-us/red_hat_software_collections/3/html/packaging_guide/[Red
+Hat Software Collections] - Руководство по упаковке дает объяснение о Software Collections, сборке и упаковке программ. Разработчики и
+системные администраторы, имеющие базовое представление об упаковке программного обеспечения с помощью RPM
+, могут использовать это руководство для начала работы с Software Collections.
+
+link:https://rpm-packaging-guide.github.io/#mock[Mock] - Mock предоставляет
+поддерживаемое сообществом решение для создания пакетов под различные архитектуры и
+версии Fedora или RHEL, отличных от хоста сборки.
+
+endif::rhel[]
+
+ifdef::community[]
+
+link:https://www.softwarecollections.org/en/[Software Collections] -
+SoftwareCollections.org это проект с открытым исходным кодом для создания и распространения поддерживаемых сообществом коллекций программного обеспечения (SCL) для Red Hat Enterprise Linux,
+Fedora, CentOS, и Scientific Linux.
+
+link:https://docs.fedoraproject.org/en-US/quick-docs/creating-rpm-packages/index.html[Creating
+RPM package] - Пошаговое руководство по изучению основ упаковки RPM.
+
+link:http://www.ibm.com/developerworks/library/l-rpm1/[Packaging software with
+RPM, Part 1], link:http://www.ibm.com/developerworks/library/l-rpm2/[Part 2],
+link:http://www.ibm.com/developerworks/library/l-rpm3/[Part 3] - 
+Руководство по упаковке IBM RPM.
+
+endif::community[]
+
+link:http://rpm.org/documentation[RPM Documentation] - 
+Официальная документация RPM.
+
+link:https://docs.fedoraproject.org/en-US/packaging-guidelines/[Fedora Packaging
+Guidelines] - 
+Официальные рекомендации по упаковке для Fedora, полезные для всех дистрибутивов на основе RPM.
+
+link:https://pagure.io/rpmfluff[rpmfluff] - библиотека python для создания пакетов RPM и их саботажа, чтобы они были взломаны контролируемыми способами.

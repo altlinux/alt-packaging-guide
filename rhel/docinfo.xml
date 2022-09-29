@@ -1,0 +1,64 @@
+<title>RPM Packaging Guide</title>
+<subtitle>Basic and Advanced RPM Packaging</subtitle>
+<productname>Red Hat Enterprise Linux</productname>
+<productnumber>7</productnumber>
+<abstract>
+    <para>
+      The RPM Packaging Guide documents packaging software into an RPM. It also shows how to prepare source code for packaging. Lastly, the guide explains selected advanced packaging scenarios.
+    </para>
+</abstract>
+<authorgroup>
+
+  <corpauthor>
+    <personname>Customer Content Services</personname>
+    <email>rhel-notes@redhat.com</email>
+  </corpauthor>
+  <author>
+    <firstname>Maxim</firstname>
+    <surname>Svistunov</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+      <orgdiv>Customer Content Services</orgdiv>
+    </affiliation>
+      </author>
+  <author>
+    <firstname>Adam</firstname>
+    <surname>Miller</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+    </affiliation>
+  </author>
+  <author>
+    <firstname>Adam</firstname>
+    <surname>Kvítek</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+      <orgdiv>Customer Content Services</orgdiv>
+    </affiliation>
+  </author>
+  <author>
+    <firstname>Petr</firstname>
+    <surname>Kovář</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+      <orgdiv>Customer Content Services</orgdiv>
+    </affiliation>
+  </author>
+  <author>
+    <firstname>Marie</firstname>
+    <surname>Doleželová</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+      <orgdiv>Customer Content Services</orgdiv>
+    </affiliation>
+  </author>
+   <author>
+    <firstname>Miroslav</firstname>
+    <surname>Suchý</surname>
+    <affiliation>
+      <orgname>Red Hat</orgname>
+    </affiliation>
+  </author>
+
+  </authorgroup>
+<xi:include href="Common_Content/Legal_Notice.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
