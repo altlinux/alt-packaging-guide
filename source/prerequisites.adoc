@@ -1,22 +1,22 @@
 [[prerequisites]]
-= Необходимые пакеты
+= Установка необходимых пакетов для процесса сборки
 
-Чтобы следовать этому руководству, Вам понадобятся пакеты, упомянутые ниже.
+Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты: 
 
 NOTE: Некоторые из этих пакетов устанавливаются по умолчанию в
 https://www.altlinux.org/Releases[ALT Linux]. Установка проводится с правами суперпользователя.
 
-В ALT Linux p10:
+
 
 [source,bash]
 ----
-$ su --
+$ su -
 Password:
 $ apt-get update 
 .
 .
 .
-$ apt-get install gcc rpm-build rpmlint make python bash gear hasher patch rpmdevtools 
+$ apt-get install gcc rpm-build rpmlint make python gear hasher patch 
 ----
 
 
