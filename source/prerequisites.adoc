@@ -12,11 +12,11 @@ https://www.altlinux.org/Releases[ALT Linux]. Установка проводи�
 ----
 $ su -
 Password:
-$ apt-get update 
+# apt-get update 
 .
 .
 .
-$ apt-get install gcc rpm-build rpmlint make python gear hasher patch 
+# apt-get install gcc rpm-build rpmlint make python gear hasher patch 
 ----
 
 
