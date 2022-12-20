@@ -10,13 +10,13 @@
 :note-caption: Примечание
 :appendix-caption: Приложение
 
+include::source/why-package-rpm.adoc[leveloffset=+1]
+
 include::source/introduction.adoc[leveloffset=+1]
 
 include::source/advanced-packaging-tool.adoc[leveloffset=+1]
 
 include::source/prerequisites.adoc[leveloffset=+1]
-
-include::source/why-package-rpm.adoc[leveloffset=+1]
 
 include::source/packaging-software.adoc[leveloffset=+1]
 

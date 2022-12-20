@@ -4,18 +4,14 @@
 Чтобы следовать данному руководству, Вам потребуется установить следующие пакеты: 
 
 NOTE: Некоторые из этих пакетов устанавливаются по умолчанию в
-https://www.altlinux.org/Releases[ALT Linux]. Установка проводится с правами суперпользователя.
+https://www.altlinux.org/Releases[Альт]. Установка проводится с правами суперпользователя.
 
 
 
 [source,bash]
 ----
-$ su -
-Password:
 # apt-get update 
-.
-.
-.
+
 # apt-get install gcc rpm-build rpmlint make python gear hasher patch 
 ----
 

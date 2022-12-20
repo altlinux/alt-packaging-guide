@@ -1,10 +1,5 @@
 [[contributing-to-this-guide]]
 = Вклад в руководство
 
-Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или запрос на извлечение на
-https://github.com/redhat-developer/rpm-packaging-guide[ GitHub репозиторий].
-
-Обе формы вклада высоко ценятся и приветствуются.
-
-Не стесняйтесь подавать заявку на решение проблемы с обратной связью, отправлять запрос на извлечение
-https://github.com/redhat-developer/rpm-packaging-guide[на GitHub] или и то, и другое!
+Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или pull request на
+https://github.com/altlinux/alt-packaging-guide[ GitHub репозиторий].
