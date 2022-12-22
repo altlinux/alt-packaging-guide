@@ -18,7 +18,7 @@ ifdef::community[]
 == PDF Версия
 
 Вы также можете скачать
-https://rpm-packaging-guide-ru.github.io/rpm-packaging-guide-ru.pdf[PDF версию
+https://alt-packaging-guide.github.io/alt-packaging-guide.pdf[PDF версию
 данного документа].
 endif::community[]
 
