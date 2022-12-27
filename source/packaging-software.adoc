@@ -38,15 +38,27 @@ endif::community[]
 ////
 
 [[rpm-packages]]
-== RPM Пакеты
+== RPM-пакеты
 
 В этом разделе рассматриваются основы формата упаковки RPM. Дополнительные сведения смотри в разделе
 xref:advanced-topics[Дополнительные материалы].
 
 [[what-is-an-rpm]]
-=== Что такое RPM?
+=== Что такое RPM-пакет?
 
-Пакет RPM - это просто файл, содержащий другие файлы и информацию о них, необходимую системе. В частности, пакет RPM состоит из архива
+RPM-пакет - это архив, содержащий в себе архив с файлами (скомпилированные исполняемые файлы, библиотеки и данные), а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки необходимых пакетов из списка зависимостей, места установки файлов и другой информации.
+
+
+
+
+
+
+
+
+
+
+
+В частности, пакет RPM состоит из архива
 ifdef::community[https://en.wikipedia.org/wiki/Cpio[cpio]]
 ifdef::rhel[cpio]
 , который содержит файлы, и заголовка RPM, который содержит метаданные о пакете. Диспетчер пакетов ``rpm`` использует эти метаданные для определения зависимостей, места установки файлов и другой информации.
@@ -203,13 +215,13 @@ ifdef::rhel[cpio]
 В этом руководстве мы используем три примера реализации программы 'Hello
 World!', созданной при подготовке xref:preparing-software-for-packaging[программного обеспечения для упаковки]:
 
-*   https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/bello-0.1.tar.gz[bello-0.1.tar.gz]
+*   https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/bello-0.1.tar.gz?raw=true[bello-0.1.tar.gz]
 
-*   https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/pello-0.1.1.tar.gz[pello-0.1.1.tar.gz]
+*   https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/pello-0.1.2.tar.gz?raw=true[pello-0.1.2.tar.gz]
 
-*   https://github.com/redhat-developer/rpm-packaging-guide/raw/master/example-code/cello-1.0.tar.gz[cello-1.0.tar.gz]
+*   https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/cello-1.0.tar.gz?raw=true[cello-1.0.tar.gz]
 
-**   https://raw.githubusercontent.com/redhat-developer/rpm-packaging-guide/master/example-code/cello-output-first-patch.patch[cello-output-first-patch.patch]
+**   https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/cello-output-first-patch.patch[cello-output-first-patch.patch]
 
 Переместите их в ``~/rpmbuild/SOURCES``.
 
