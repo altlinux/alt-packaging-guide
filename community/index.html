@@ -459,20 +459,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#RPM_Commands">Основные команды RPM</a></li>
 <li><a href="#packaging-software">Программное обеспечение для упаковки</a>
 <ul class="sectlevel2">
-<li><a href="#rpm-packages">RPM Пакеты</a>
+<li><a href="#rpm-packages">RPM-пакеты</a>
 <ul class="sectlevel3">
-<li><a href="#what-is-an-rpm">Что такое RPM?</a></li>
+<li><a href="#what-is-an-rpm">Что такое RPM-пакет?</a></li>
 <li><a href="#rpm-packaging-tools">Инструменты для упаковки RPM</a></li>
 <li><a href="#rpm-packaging-workspace">Рабочее пространство для упаковки RPM</a></li>
-<li><a href="#what-is-a-spec-file">Что такое SPEC файл?</a></li>
-<li><a href="#buildroots">BuildRoots</a></li>
-<li><a href="#working-with-spec-files">Работа со SPEC файлами</a></li>
-</ul>
-</li>
-<li><a href="#building-rpms">Сборка RPMS</a>
-<ul class="sectlevel3">
-<li><a href="#source-rpms">Исходный RPMs</a></li>
-<li><a href="#binary-rpms">Бинарный RPMS</a></li>
+<li><a href="#what-is-a-spec-file">Что такое SPEC-файл?</a></li>
 </ul>
 </li>
 </ul>
@@ -995,33 +987,31 @@ language is designed to be easy to use and extensible.</code></pre>
 <h2 id="packaging-software">Программное обеспечение для упаковки</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="rpm-packages">RPM Пакеты</h3>
+<h3 id="rpm-packages">RPM-пакеты</h3>
 <div class="paragraph">
-<p>В этом разделе рассматриваются основы формата упаковки RPM. Дополнительные сведения смотри в разделе
+<p>В этом разделе рассматриваются основы cборки RPM-пакетов. Дополнительные сведения смотри в разделе
 <a href="#advanced-topics">Дополнительные материалы</a>.</p>
 </div>
 <div class="sect3">
-<h4 id="what-is-an-rpm">Что такое RPM?</h4>
+<h4 id="what-is-an-rpm">Что такое RPM-пакет?</h4>
 <div class="paragraph">
-<p>Пакет RPM - это просто файл, содержащий другие файлы и информацию о них, необходимую системе. В частности, пакет RPM состоит из архива
-<a href="https://en.wikipedia.org/wiki/Cpio">cpio</a>
-, который содержит файлы, и заголовка RPM, который содержит метаданные о пакете. Диспетчер пакетов <code>rpm</code> использует эти метаданные для определения зависимостей, места установки файлов и другой информации.</p>
+<p>RPM-пакет - это архив, содержащий в себе архив <a href="https://en.wikipedia.org/wiki/Cpio">.cpio</a> с файлами (скомпилированные исполняемые файлы, библиотеки и данные), а также метаданные - имя пакета, его описание, зависимости и т.д. Менеджер пакетов RPM использует эти метаданные для проверки наличия необходимых пакетов из списка зависимостей, исполнения иструкций по установке файлов и сохранения общей иформации о пакете у себя в базе.</p>
 </div>
 <div class="paragraph">
-<p>Существует два типа пакетов RPM:</p>
+<p>Существует два типа RPM-пакетов:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>исходник RPM (SRPM)</p>
+<p>SRPM-пакеты (исходники) - архив с расширением <code>.src.rpm</code></p>
 </li>
 <li>
-<p>бинарный RPM</p>
+<p>RPM-пакеты (бинарники) - архив с расширением <code>.rpm</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>SRPMs и бинарные RPMs имеют общий формат файла и инструментарий, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости исправления к нему и файл спецификации, в котором описывается, как встроить исходный код в бинарный RPM. Бинарный RPM содержит двоичные файлы, созданные из исходных текстов и патчей.</p>
+<p>SRPM и RPM-пакеты имеют общий формат и инструментарий, но имеют разное содержимое и служат разным целям. SRPM содержит исходный код, при необходимости патчи к нему и spec-файл, в котором описывается, как собрать исходный код в бинарный RPM-пакет. Бинарный RPM-пакет содержит бинарные файлы, созданные из исходных текстов и патчей, если таковые имелись.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1031,7 +1021,7 @@ language is designed to be easy to use and extensible.</code></pre>
 <div class="sect3">
 <h4 id="rpm-packaging-workspace">Рабочее пространство для упаковки RPM</h4>
 <div class="paragraph">
-<p>Чтобы настроить макет каталога, который является рабочей областью упаковки RPM, используйте утилиту <code>rpmdev-setuptree</code>:</p>
+<p>Чтобы создать дерево каталогов, которое является рабочей областью упаковки RPM, используйте утилиту <code>rpmdev-setuptree</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1043,9 +1033,7 @@ $ tree ~/rpmbuild/
 |-- RPMS
 |-- SOURCES
 |-- SPECS
-`-- SRPMS`
-
-5 directories, 0 files</code></pre>
+ -- SRPMS</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1063,31 +1051,31 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BUILD</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Содержит все файлы, которые появляются при создании пакета.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Содержит все файлы, которые появляются при сборке пакета.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">RPMS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Бинарные RPM создаются здесь, в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь появляются готовые бинарные RPM-пакеты (<code>.rpm</code>), в подкаталогах для разных архитектур, например, в подкаталогах<code>x86_64</code> и <code>noarch</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SOURCES</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь упаковщик помещает сжатые архивы исходного кода и патчи. Команда <code>rpmbuild</code> ищет их здесь.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь находятся архивы исходного кода и патчи. Утилита <code>rpmbuild</code> ищет их здесь.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SPECS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Упаковщик помещает сюда файлы спецификаций.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь хранятся spec-файлы.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SRPMS</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Когда rpmbuild используется для сборки SRPM вместо бинарного RPM, результирующий SRPM создается здесь.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Здесь находятся пакеты с исходниками (<code>.src.rpm</code>).</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="what-is-a-spec-file">Что такое SPEC файл?</h4>
+<h4 id="what-is-a-spec-file">Что такое SPEC-файл?</h4>
 <div class="paragraph">
-<p>Файл спецификации можно рассматривать как "рецепт", который утилита <code>rpmbuild</code> использует для фактической сборки RPM. Он сообщает системе сборки, что делать, определяя инструкции в серии разделов. Разделы определены в <em>Преамбуле</em> и в <em>Основной части</em>. <em>Преамбула</em> содержит ряд элементов метаданных, которые используются в <em>Основной части</em>. Тело содержит основную часть инструкций.</p>
+<p>Spec-файл можно рассматривать как "инструкцию", который утилита <code>rpmbuild</code> использует для фактической сборки RPM-пакет. Он сообщает системе сборки, что делать, определяя инструкции в серии разделов. Разделы определены в <em>Преамбуле</em> и в <em>Основной части</em>. <em>Преамбула</em> содержит ряд элементов метаданных, которые используются в <em>Основной части</em>. Тело содержит основную часть инструкций.</p>
 </div>
 <div class="sect4">
 <h5 id="preamble-items">Пункты преамбулы</h5>
@@ -1106,7 +1094,7 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Базовое имя пакета, которое должно совпадать с именем файла спецификации.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Базовое имя пакета, которое должно совпадать с именем spec-файла.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Version</code></p></td>
@@ -1122,24 +1110,23 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>License</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на упаковываемое программное обеспечение.
-Для пакетов, распространяемых в дистрибутивах сообщества, таких как <a href="https://getfedora.org/">Fedora</a>, это должна быть лицензия с открытым исходным кодом, соответствующая рекомендациям по лицензированию конкретного дистрибутива.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Лицензия на упаковываемое программное обеспечение.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>URL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это веб-сайт upstream-проекта для упаковываемого программного обеспечения.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Полный URL-адрес для получения дополнительной информации о программе. Чаще всего это веб-сайт upstream-проекта для собираемого программного обеспечения.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Source0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Путь или URL-адрес к сжатому архиву исходного кода (не исправленный, исправления обрабатываются в другом месте). Этот раздел должен указывать на доступное и надежное хранилище архива, например, на upstream-страницу, а не на локальное хранилище упаковщика. При необходимости можно добавить дополнительные исходные директивы, каждый раз увеличивая их количество, например: Source1, Source2, Source3 и так далее.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Путь или URL-адрес к сжатому архиву исходного кода (не исправленный, исправления обрабатываются в другом месте). Этот раздел должен указывать на доступное и надежное хранилище архива, например, на upstream-страницу, а не на локальное хранилище сборщика. При необходимости можно добавить дополнительные исходные директивы, каждый раз увеличивая их количество, например: Source1, Source2, Source3 и так далее.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Patch0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Название первого исправления, которое при необходимости будет применено к исходному коду. При необходимости можно добавить дополнительные директивы PatchX, увеличивая их количество каждый раз, например: Patch1, Patch2, Patch3 и так далее.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Название первого патча, который при необходимости будет применен к исходному коду. При необходимости можно добавить дополнительные директивы PatchX, увеличивая их количество каждый раз, например: Patch1, Patch2, Patch3 и так далее.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildArch</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Если пакет не зависит от архитектуры, например, если он полностью написан на интерпретируемом языке программирования, установите для этого значение <code>BuildArch: noarch</code>. Если этот параметр не задан, пакет автоматически наследует архитектуру компьютера, на котором он построен, например <code>x86_64</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Если пакет не зависит от архитектуры, например, если он полностью написан на интерпретируемом языке программирования, установите для этого значение <code>BuildArch: noarch</code>. Если этот параметр не задан, пакет автоматически наследует архитектуру компьютера, на котором он собран, например <code>x86_64</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildRequires</code></p></td>
@@ -1147,7 +1134,7 @@ $ tree ~/rpmbuild/
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Requires</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых программному обеспечению для запуска после установки. Может быть несколько записей <code>Requires</code>, каждая в отдельной строке в SPEC файле.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Разделённый запятыми или пробелами список пакетов, необходимых программному обеспечению для запуска после установки. Это его <strong>зависимости</strong> Может быть несколько записей <code>Requires</code>, каждая в отдельной строке в SPEC файле.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ExcludeArch</code></p></td>
@@ -1156,20 +1143,20 @@ $ tree ~/rpmbuild/
 </tbody>
 </table>
 <div class="paragraph">
-<p>Директивы <code>Name</code>, <code>Version</code> и <code>Release</code> содержат имя файла пакета RPM. Разработчики пакетов RPM и системные администраторы часто называют эти три директивы <strong>N-V-R</strong> или <strong>NVR</strong>, поскольку имена файлов пакетов RPM имеют формат <code>NAME-VERSION-RELEASE</code>.</p>
+<p>Директивы <code>Name</code>, <code>Version</code> и <code>Release</code> содержат имя RPM-пакета. Эти три директивы часто называют <strong>N-V-R</strong> или <strong>NVR</strong>, поскольку имена RPM-пакета имеют формат <code>NAME-VERSION-RELEASE</code>.</p>
 </div>
 <div class="paragraph">
 <p>Вы можете получить пример <code>NAME-VERSION-RELEASE</code>, выполнив запрос с использованием <code>rpm</code> для конкретного пакета:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -q python
-python-2.7.5-34.el7.x86_64</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -q rpmdevtools
+rpmdevtools-8.10-alt2.noarch</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Здесь <code>python</code> - это имя пакета, <code>2.7.5</code> - версия, а <code>34.el7</code> - релиз. Последний маркер <code>x86_64</code> - сведения об архитектуре.
-В отличие от NVR, маркер архитектуры не находится под прямым управлением RPM упаковщика, а определяется средой сборки <code>rpmbuild</code>. Исключением из этого правила является архитектурно-независимый пакет <code>noarch</code>.</p>
+<p>Здесь <code>rpmdevtools</code> - это имя пакета, <code>8.10</code> - версия, а <code>alt2</code> - релиз. Последний маркер <code>noarch</code> - сведения об архитектуре.
+В отличие от NVR, маркер архитектуры не находится под прямым управлением сборщика, а определяется средой сборки <code>rpmbuild</code>. Исключением из этого правила является архитектурно-независимый пакет <code>noarch</code>.</p>
 </div>
 </div>
 <div class="sect4">
@@ -1217,364 +1204,6 @@ python-2.7.5-34.el7.x86_64</code></pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect4">
-<h5 id="advanced-items">Дополнительные элементы</h5>
-<div class="paragraph">
-<p>Файл спецификации также может содержать дополнительные элементы. Например, файл спецификации может содержать <em>скриптлеты_ и </em>триггеры__. Они вступают в силу в разные моменты процесса установки в системе конечного пользователя (не в процессе сборки).</p>
-</div>
-<div class="paragraph">
-<p>Дополнительную информацию см.  <a href="#triggers-and-scriptlets">Триггеры и скриптлеты</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="buildroots">BuildRoots</h4>
-<div class="paragraph">
-<p>В контексте упаковки RPM "buildroot" - это среда
-<a href="https://en.wikipedia.org/wiki/Chroot">chroot</a>
-Это означает, что артефакты сборки размещаются здесь с использованием той же иерархии файловой системы, что и в системе конечного пользователя, при этом "buildroot" выступает в качестве корневого каталога. Размещение артефактов сборки должно соответствовать стандарту иерархии файловой системы конечного пользователя.</p>
-</div>
-<div class="paragraph">
-<p>Файлы в "buildroot" позже помещаются в архив
-<a href="https://en.wikipedia.org/wiki/Cpio">cpio</a>
-, который становится основной частью RPM. Когда RPM устанавливается в системе конечного пользователя, эти файлы извлекаются в корневой каталог, сохраняя правильную иерархию.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Начиная с выпуска Red Hat Enterprise Linux 6, программа <code>rpmbuild</code> имеет свои собственные значения макросов по умолчанию. Поскольку переопределение этих значений по умолчанию приводит к ряду проблем, Red Hat не рекомендует определять собственное значение этого макроса. Вы можете использовать макрос
-<code>%{buildroot}</code>  с параметрами по умолчанию из каталога <code>rpmbuild</code>.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="working-with-spec-files">Работа со SPEC файлами</h4>
-<div class="paragraph">
-<p>Большая часть упаковки программного обеспечения в RPMs - это редактирование файла спецификации. В этом разделе мы обсудим, как создать и изменить SPEC файл.</p>
-</div>
-<div class="paragraph">
-<p>Чтобы упаковать новое программное обеспечение, Вам необходимо создать новый файл спецификации. Вместо того, чтобы писать его вручную с нуля, используйте утилиту <code>rpmdev-newspec</code>. Она создаёт незаполненный файл спецификации, и Вы заполняете необходимые директивы и поля.</p>
-</div>
-<div class="paragraph">
-<p>В этом руководстве мы используем три примера реализации программы 'Hello
-World!', созданной при подготовке <a href="#preparing-software-for-packaging">программного обеспечения для упаковки</a>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/bello-0.1.tar.gz?raw=true">bello-0.1.tar.gz</a></p>
-</li>
-<li>
-<p><a href="https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/pello-0.1.2.tar.gz?raw=true">pello-0.1.2.tar.gz</a></p>
-</li>
-<li>
-<p><a href="https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/cello-1.0.tar.gz?raw=true">cello-1.0.tar.gz</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/altlinux/alt-packaging-guide/blob/master/example-code/cello-output-first-patch.patch">cello-output-first-patch.patch</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Переместите их в <code>~/rpmbuild/SOURCES</code>.</p>
-</div>
-<div class="paragraph">
-<p>Создайте SPEC файл для каждой из трёх программ:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-Некоторые текстовые редакторы, ориентированные на программистов, предварительно заполняют новый <code>.spec</code> файл с их собственным шаблоном спецификации. <code>rpmdev-newspec</code> предоставляет независимый от редактора метод, именно поэтому он используется в этом руководстве.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ cd ~/rpmbuild/SPECS
-
-$ rpmdev-newspec bello
-bello.spec created; type minimal, rpm version &gt;= 4.11.
-
-$ rpmdev-newspec cello
-cello.spec created; type minimal, rpm version &gt;= 4.11.
-
-$ rpmdev-newspec pello
-pello.spec created; type minimal, rpm version &gt;= 4.11.</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><code>~/rpmbuild/SPECS/</code> каталог теперь имеет три SPEC файла с именами
-<code>bello.spec</code>, <code>cello.spec</code>, и <code>pello.spec</code>.</p>
-</div>
-<div class="paragraph">
-<p>Изучите файлы. Директивы в них представляют собой директивы, описанные в разделе
-<a href="#what-is-a-spec-file">Что такое SPEC файл</a>.  В следующих разделах Вы заполните эти файлы спецификаций.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Примечание</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Утилита <code>rpmdev-newspec</code> не использует рекомендации или соглашения, характерные для какого-либо конкретного дистрибутива Linux. Однако этот документ предназначен для Fedora, CentOS и RHEL, поэтому В ы заметите, что:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Используйте <code>rm $RPM_BUILD_ROOT</code> при сборке на  <em>CentOS</em> (версии, предшествующие версии 7.0)
-или на <a href="https://getfedora.org/">Fedora</a> (версии, предшествующие версии 18).</p>
-</li>
-<li>
-<p>Мы предпочитаем использовать обозначение <code>%{buildroot}</code> вместо <code>$RPM_BUILD_ROOT</code> при обращении к Buildroot RPM для обеспечения согласованности со всеми другими определенными или предоставленными макросами во всем файле спецификации..</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Ниже приведены три примера. Каждый из них полностью описан, так что вы можете перейти к конкретному, если он соответствует вашим потребностям в упаковке. Или прочтите их все, чтобы полностью изучить упаковку различных видов программного обеспечения.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 15%;">
-<col style="width: 85%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Имя программы</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Объяснение примера</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">bello</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на необработанном интерпретируемом языке программирования. Пример демонстрирует, когда исходный код не нужно собирать, а нужно только установить. Если необходимо упаковать предварительно скомпилированный бинарный файл, Вы также можете использовать этот метод.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pello</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на интерпретируемом языке программирования с последующей байт-компиляцией. Пример демонстрирует байт-компиляцию исходного кода и установку байт-кода - результирующих, предварительно оптимизированных файлов.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cello</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Программа, написанная на изначально скомпилированном языке программирования. Пример демонстрирует общий процесс компиляции исходного кода в машинный код и установки результирующих исполняемых файлов.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="building-rpms">Сборка RPMS</h3>
-<div class="paragraph">
-<p>RPMs собираются с помощью команды  <code>rpmbuild</code>. Различные сценарии и желаемые результаты требуют различных комбинаций аргументов для <code>rpmbuild</code>. В этом разделе описываются два основных сценария:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>сборка исходного RPM</p>
-</li>
-<li>
-<p>сборка бинарного RPM</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Команда <code>rpmbuild</code> ожидает определенную структуру каталогов и файлов.  Это та же структура, что и в утилите <code>rpmdev-setuptree</code>. Предыдущие инструкции также подтвердили требуемую структуру.</p>
-</div>
-<div class="sect3">
-<h4 id="source-rpms">Исходный RPMs</h4>
-<div class="paragraph">
-<p>Зачем создавать исходный RPM (SRPM)?</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Чтобы сохранить точный источник определенного Name-Version-Release RPM, который был развернут в среде.  Это включает в себя точный SPEC файл, исходный код и все соответствующие исправления. Это полезно для просмотра истории и для отладки.</p>
-</li>
-<li>
-<p>Чтобы иметь возможность создавать бинарный RPM на другой аппаратной платформе или
-<a href="https://en.wikipedia.org/wiki/Microarchitecture">архитектуре</a>.</p>
-</li>
-</ol>
-</div>
-<div class="sect4">
-<h5 id="create-source-rpms">Для сборки SRPM:</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -bs _SPECFILE_</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Замените <em>SPECFILE</em> именем SPEC файла. Параметр  <code>-bs</code> "исходный код сборки".</p>
-</div>
-<div class="paragraph">
-<p>Здесь мы собираем SRPMs для <code>bello</code>, <code>pello</code> и <code>cello</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ cd ~/rpmbuild/SPECS/
-
-$ rpmbuild -bs bello.spec
-Wrote: /home/admiller/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
-
-$ rpmbuild -bs pello.spec
-Wrote: /home/admiller/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
-
-$ rpmbuild -bs cello.spec
-Wrote: /home/admiller/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Обратите внимание, что SRPMS были помещены в каталог  <code>rpmbuild/SRPMS</code>, который является частью структуры, ожидаемой <code>rpmbuild</code>.</p>
-</div>
-<div class="paragraph">
-<p>Это все, что нужно для сборки SRPM.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="binary-rpms">Бинарный RPMS</h4>
-<div class="paragraph">
-<p>Существует два метода сборки бинарных RPMs:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Восстановление его из SRPM с использованием комманды<code>rpmbuild --rebuild</code>.</p>
-</li>
-<li>
-<p>Собираем его из файла спецификации с помощью команды <code>rpmbuild -bb</code>. Опция  <code>-bb</code> означает "собрать бинарный файл" (<code>build binary</code>).</p>
-</li>
-</ol>
-</div>
-<div class="sect4">
-<h5 id="rebuild">Восстановление из исходного RPM</h5>
-<div class="paragraph">
-<p>Чтобы перестроить <code>bello</code>, <code>pello</code> и <code>cello</code> из исходных RPM (SRPMs), запустите:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild --rebuild ~/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
-[output truncated]
-
-$ rpmbuild --rebuild ~/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
-[output truncated]
-
-$ rpmbuild --rebuild ~/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm
-[output truncated]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Теперь Вы собрали RPM. Несколько заметок:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Выходные данные, генерируемые при сборке бинарного RPM, являются подробными, что полезно для отладки. Выходные данные различаются для разных примеров и соответствуют их SPEC файлам.</p>
-</li>
-<li>
-<p>Конечные бинарные RPM находятся в   <code>~/rpmbuild/RPMS/YOURARCH</code>, где <code>YOURARCH</code> - это Ваша
-<a href="https://en.wikipedia.org/wiki/Microarchitecture">архитектура</a>
-, или в
-<code>~/rpmbuild/RPMS/noarch/</code>, если пакет не зависит от архитектуры.</p>
-</li>
-<li>
-<p>Вызов <code>rpmbuild --rebuild</code> включает в себя:</p>
-<div class="openblock">
-<div class="content">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Установку содержимого RPM - файла спецификации и исходного кода - в каталог <code>~/rpmbuild/</code>.</p>
-</li>
-<li>
-<p>Сборка с использованием установленного содержимого.</p>
-</li>
-<li>
-<p>Удаление файла спецификации и исходного кода.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Вы можете сохранить файл спецификации и исходный код после сборки. Для этого у Вас есть два варианта:</p>
-</div>
-<div class="openblock">
-<div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>При сборке используйте опцию  <code>--recompile</code> вместо <code>--rebuild</code>.</p>
-</li>
-<li>
-<p>Установите SRPMS с помощью следующих команд:</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpm -Uvh ~/rpmbuild/SRPMS/bello-0.1-1.el7.src.rpm
-Updating / installing...
-   1:bello-0.1-1.el7                  ################################# [100%]
-
-$ rpm -Uvh ~/rpmbuild/SRPMS/pello-0.1.1-1.el7.src.rpm
-Updating / installing...
-   1:pello-0.1.1-1.el7                ################################# [100%]
-
-$ rpm -Uvh ~/rpmbuild/SRPMS/cello-1.0-1.el7.src.rpm
-Updating / installing...
-   1:cello-1.0-1.el7                  ################################# [100%]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>В этом руководстве выполните приведенные выше команды <code>rpm -Uvh</code> чтобы продолжить взаимодействие с файлами спецификаций и исходными кодами.</p>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="build-binary">Создание бинарного файла из SPEC файла</h5>
-<div class="paragraph">
-<p>Чтобы собрать <code>bello</code>, <code>pello</code>, и <code>cello</code> из их SPEC файлов, запустите:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ rpmbuild -bb ~/rpmbuild/SPECS/bello.spec
-
-$ rpmbuild -bb ~/rpmbuild/SPECS/pello.spec
-
-$ rpmbuild -bb ~/rpmbuild/SPECS/cello.spec</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Теперь Вы собрали RPM из SPEC файлов.</p>
-</div>
-<div class="paragraph">
-<p>Большая часть информации, содержащейся в разделе <a href="#rebuild">Восстановление из исходного RPM</a> применима здесь.</p>
-</div>
 </div>
 </div>
 </div>
