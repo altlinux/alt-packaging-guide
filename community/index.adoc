@@ -22,6 +22,7 @@ include::source/rpm-command.adoc[leveloffset=+1]
 
 include::source/packaging-software.adoc[leveloffset=+1]
 
+
 //include::source/hello-world.adoc[leveloffset=+1]
 
 //include::source/macro.adoc[leveloffset=+1]
