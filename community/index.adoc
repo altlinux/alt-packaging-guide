@@ -25,7 +25,7 @@ include::source/packaging-software.adoc[leveloffset=+1]
 include::source/gear.adoc[leveloffset=+1]
 
 
-//include::source/hello-world.adoc[leveloffset=+1]
+include::source/preparing-programs.adoc[leveloffset=+1]
 
 //include::source/macro.adoc[leveloffset=+1]
 
