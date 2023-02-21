@@ -209,18 +209,33 @@ https://docs.python.org/2/library/distribution.html[Упаковка и расп
 [source,bash]
 ----
 $ python3 -m compileall pello.py
-Compiling `pello.py`...
-
-$ file pello.py
-pello.py: python script text executable
 
 ----
 
-Запустите``pello.py``:
+В рабочем каталоге создастся подкаталог `pycache`:
 
 [source,bash]
 ----
-$ python3 pello.py
-Hello World
+$ ls 
+pello.py  __pycache__
 
 ----
+
+в котором находится скомпилированный в байт-код файл: 
+
+[source,bash]
+----
+$ ls ./__pycache__
+pello.cpython-39.pyc
+
+----
+
+Запустим его: 
+
+[source,bash]
+----
+$ pychon3 pello.cpython-39.pyc
+Hello world!
+----
+
+
