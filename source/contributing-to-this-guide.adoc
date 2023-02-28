@@ -1,5 +1,5 @@
 [[contributing-to-this-guide]]
 = Вклад в руководство
 
-Вы можете внести свой вклад в это руководство, отправив сообщение о проблеме или pull request в
-https://github.com/altlinux/alt-packaging-guide[ GitHub репозиторий].
+Вы можете внести свой вклад в это руководство, отправив запрос на принятие изменений  (Pull Request) в оригинальный  
+https://github.com/altlinux/alt-packaging-guide[репозиторий].

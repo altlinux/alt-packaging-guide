@@ -14,6 +14,8 @@ include::source/why-package-rpm.adoc[leveloffset=+1]
 
 include::source/introduction.adoc[leveloffset=+1]
 
+include::source/contributing-to-this-guide.adoc[leveloffset=+1]
+
 include::source/advanced-packaging-tool.adoc[leveloffset=+1]
 
 include::source/prerequisites.adoc[leveloffset=+1]
@@ -23,7 +25,6 @@ include::source/rpm-command.adoc[leveloffset=+1]
 include::source/packaging-software.adoc[leveloffset=+1]
 
 include::source/gear.adoc[leveloffset=+1]
-
 
 include::source/preparing-programs.adoc[leveloffset=+1]
 

@@ -12,6 +12,21 @@ https://www.altlinux.org/Releases[Альт]. Установка проводит
 ----
 # apt-get update 
 
+Получено: 1 http://ftp.altlinux.org p10/branch/x86_64 release [4223B]
+Получено: 2 http://ftp.altlinux.org p10/branch/x86_64-i586 release [1665B]
+Получено: 3 http://ftp.altlinux.org p10/branch/noarch release [2844B]
+Получено 8732B за 0s (81,8kB/s).                    
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/classic release
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64/gostcrypto release
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/x86_64-i586/classic release
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic pkglist
+Найдено http://ftp.altlinux.org p10/branch/noarch/classic release
+Чтение списков пакетов... Завершено
+Построение дерева зависимостей... Завершено
+
 # apt-get install gcc rpm-build rpmlint make python gear hasher patch 
 ----
 
