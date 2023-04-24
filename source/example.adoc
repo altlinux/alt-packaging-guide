@@ -1,0 +1,427 @@
+= Примеры сборки пакетов с использованием инструментов Альт 
+
+Для примера сборки пакета будем использовать программу для вывода системных уведомлений о текущей дате и времени. 
+Ссылка на github-репозиторий с исходными текстами программ на языках C++ (https://github.com/MakDaffi/notification[Notification]) и Python (https://github.com/danila-Skachedubov/DBusTimer_example[DBusTimer_Example])
+
+Структура репозиториев для данных программ идентична: Главный файл (.cpp или .py) и два юнита systemd (.service и .timer)
+
+Вдаваться в подробности написания кода мы не будем, так как основная цель - сборка пакета, а не разработка приложения. (((Как уже описывалось выше, сборка пакета не связана с разработкой приложения)))
+
+Файл .timer - юнит systemd, который при истечении заданного времени будет вызывать скрипт .py, который выводит уведомление о дате и времени. После срабатывания таймер снова начинает отсчёт до запуска скрипта. 
+
+Файл .service - содержит описание, расположение скрипта .py и интерпретатора, который будет обрабатывать скрипт. 
+
+
+== Подготовка пространства
+
+Первым шагом Вам необходимо склонировать репозиторий в Вашу рабочую директорию, используя команду `git clone (адрес репозитория DBusTimer_Example из ссылки выше)`:
+
+[source, bash]
+
+----
+$ git clone https://github.com/danila-Skachedubov/DBusTimer_example.git
+
+Cloning into 'DBusTimer_example'...
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 5 (delta 0), reused 5 (delta 0), pack-reused 0
+Receiving objects: 100% (5/5), done.
+----
+
+В рабочей директории появится каталог с названием проекта: DBusTimer_Example.
+
+Создадим каталог `.gear` и перейдём в него. 
+
+[source, bash]
+----
+DBusTimer_example $ mkdir .gear
+DBusTimer_example $ cd .gear/
+.gear $ 
+----
+
+В каталоге `.gear` создадим два файла: правила для `gear - rules` и `spec` файл - `dbustimer.spec`
+
+[source, bash]
+----
+.gear $ touch rules dbustimer.spec
+----
+
+После всех изменений содержание каталога проекта примет следующий вид:
+
+[source, bash]
+----
+DBusTimer_example $ ls -la
+итого 28
+drwxr-xr-x  4 sova domain users 4096 апр 20 14:20 .
+drwxr-xr-x 10 sova domain users 4096 апр 20 14:06 ..
+drwxr-xr-x  2 sova domain users 4096 апр 20 14:24 .gear
+drwxr-xr-x  8 sova domain users 4096 апр 20 14:06 .git
+-rwxr-xr-x  1 sova domain users  413 апр 20 14:06 script_dbus.py
+-rw-r--r--  1 sova domain users  186 апр 20 14:06 script_dbus.service
+-rw-r--r--  1 sova domain users  106 апр 20 14:06 script_dbus.timer
+DBusTimer_example $ ls .gear/
+dbustimer.spec  rules
+----
+
+== Написание spec файла и правил Gear
+
+Следующим этапом сборки будет написание `spec` файла и правил для gear.
+
+В каталоге .gear откроем файл `rules`. Заполним его следующим содержимымЖ 
+
+[source, bash]
+----
+tar: .
+spec: .gear/dbustimer.spec
+----
+
+Первая строка указывает, что проект будет упакован в `.tar` архив. Вторая строка указывает путь к расположению `.spec` файла.
+На этом этапе редактирование `rules` заканчивается. 
+
+Перейдём к написанию `.spec` файла.
+
+В заголовке или шапке спек файла находятся секции Name, Version, Release, Summary, License, Group, BuildArch, BuildRequires, Source0.
+
+Заполнив данные секции, заголовок spec файла примет вид: 
+
+[source, bash]
+----
+Name: dbustimer
+Version: 0.4
+Release: alt1
+
+Summary: Display system time
+License: GPLv3+
+Group: Other
+BuildArch: noarch
+
+BuildRequires: rpm-build-python3
+----
+
+Стандартная схема Name-Version-Release, содержащая в себе имя пакета, его версию и релиз сборки. Поле Summary включает в себя краткое описание пакета. License - лицензия, под которой выпускается данное ПО. В данном случае - GPLv3. Группа - категория, к которой относится пакет. Так как это тестовый пакет для примера, выставим группу "Other". BuildRequires - пакеты, необходимые для _сборки_. Так как исходный код написан на python3, нам необходим пакет `rpm-build-python3` с макросами для сборки скриптов Python. Source0 - путь к архиву с исходниками (%name-%version.tar). На этом заголовок .spec файла заканчивается.
+
+
+Далее - тело, или основная часть .spec файла. В ней описывается сам процесс сборки и инструкции к преобразованию исходных файлов. 
+
+Начнём с заполнения полей `%description` и `%prep`.
+ 
+
+[source, bash]
+
+----
+%description
+This program displays notifications about the system time with a frequency of one hour.
+
+%prep
+%setup -q
+----
+
+
+В секции `%description` находится краткое описание программы. Секция `%prep` отвечает за подготовку программы к сборке. Макрос `%setup` распаковывает исходный код перед компиляцией. 
+
+
+
+В секции %install описаны инструкции, как установить файлы пакета в систему конечного пользователя. 
+
+Вместо того, чтобы писать пути установки файлов вручную, будем использовать предопределённые макросы:
+`%python3_sitelibdir_noarch` будет раскрываться в путь `/usr/lib/python3/site-packages`. По этому пути будет создан каталог с именем пакета, в который будет помещён файл `script_dbus.py` с правами доступа 755.
+
+Аналогичная операция будет проведена с файлами `script_dbus.timer` и `script_dbus.service`. Они должны быть установлены по пути `/etc/xdg/systemd/user`. Так как макроса, раскрывающегося в данный путь нет, будет использован макрос `%_sysconfdir`, который раскрывается в путь `/etc`.
+
+
+[source, bash]
+----
+%install
+
+
+mkdir -p \
+	%buildroot%python3_sitelibdir_noarch/%name/
+install -Dm0755 script_dbus.py \
+	%buildroot%python3_sitelibdir_noarch/%name/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp script_dbus.timer script_dbus.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+----
+
+Команда `mkdir -p \
+%buildroot%python3_sitelibdir_noarch/%name/` создаёт каталог `dbustimer` в окружении `buildroot` по пути 
+`/usr/lib/python3/site-packages`
+
+Следующим действием происходит установка файла `script_dbus.py` с правами 755 в каталог `/usr/lib/python3/site-packages/dbustimer/` в окружении `buildroot`.
+
+Аналогично создаётся каталог `%buildroot%_sysconfdir/xdg/systemd/user/`, в который копируются файлы .service и .timer 
+
+Секция %files
+
+[source, bash]
+
+----
+%files
+%python3_sitelibdir_noarch/%name/script_dbus.py
+/etc/xdg/systemd/user/script_dbus.service
+/etc/xdg/systemd/user/script_dbus.timer
+----
+
+
+В секции %files описано, какие файлы и каталоги с соответствующими атрибутами должны быть скопированы из дерева сборки в rpm-пакет, а затем будут копироваться в целевую систему при установке этого пакета. Все три
+файла из пакета будут распакованы по путям, описанным в секции %install.
+
+
+Секция %changelog. Здесь описаны изменения внесённые в ПО, патчи, изменения методологии сборки
+
+[source, bash]
+----
+%changelog
+* Thu Apr 13 2023 Danila Skachedubov <dan@altlinux.org> 0.4-alt1
+- Update system
+- Changed access rights
+----
+
+
+После всех манипуляций Ваш .spec файл будет выглядеть следующим образом: 
+
+[source, bash]
+----
+Name: dbustimer
+Version: 0.4
+Release: alt1
+
+Summary: Display system time
+License: GPLv3+
+Group: Other
+BuildArch: noarch
+
+BuildRequires: rpm-build-python3
+
+Source0: %name-%version.tar
+
+%description
+This program displays notifications about the system time with a frequency of one hour.
+
+%prep
+%setup 
+
+%install
+
+mkdir -p \
+	%buildroot%python3_sitelibdir_noarch/%name/
+install -Dm0755 script_dbus.py \
+	%buildroot%python3_sitelibdir_noarch/%name/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp script_dbus.timer script_dbus.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+
+%files
+%python3_sitelibdir_noarch/%name/script_dbus.py
+/etc/xdg/systemd/user/script_dbus.service
+/etc/xdg/systemd/user/script_dbus.timer
+
+%changelog
+* Thu Apr 13 2023 Danila Skachedubov <dan@altlinux.org> 0.4-alt1
+- Update system
+- Changed access rights
+----
+
+
+Сохраним файл и перейдём в основную директорию нашего проекта.
+
+Теперь необходимо добавить созданные нами файлы на отслеживание git. 
+Сделать это можно с помощью команды: 
+
+[source, bash]
+----
+$ git add .gear/rules .gear/dbustimer.spec
+----
+
+После добавление файлов на отслеживание, запустим сборку с помощью инструментов gear и hasher следующей командой:
+
+[source, bash]
+
+----
+$ gear-hsh --no-sisyphus-check --commit -v
+----
+
+Если сборка прошла успешно, собранный пакет `dbustimer-0.4-alt1.noarch.rpm` будет находится в каталоге `~/hasher/repo/x86_64/RPMS.hasher/`.
+
+
+== Описание пакета с исходными текстами на C++
+
+Ссылка на GitHub репозиторий: https://github.com/MakDaffi/notification[Notification].
+
+Данная программа выводит системное уведомление о текущей дате и времени в формате: `День недели, месяц, число, чч:мм:сс, год.`
+
+В репозитории находятся следующие файлы:
+
+. .gear  -  каталог с правилами gear и .spec файлом
+
+. Makefile — набор инструкций для программы make, которая собирает данный проект.
+
+. notify.cpp - исходный код программы
+
+. notify.service - юнит данной программы для systemd 
+
+. notify.timer - юнит systemd, запускающий вывод уведомления о дате и времени с переодичностью в один час.
+
+
+
+В каталоге .gear находятся два файла: 
+
+. rules - правила для упаковки архива для gear
+
+. notify.spec - файл спецификации для сборки пакета
+
+
+Остановимся подробнее на этих двух файлах. 
+
+Перейдём к содержанию файла `rules`
+
+[source,bash]
+----
+tar: .
+spec: .gear/notify.spec
+----
+
+Первая строка - указания для gear, в какой формат упаковать файлы для последующей сборки. В данном проекте архив будет иметь вид `name-version.tar`.
+
+Вторая строка - путь к .spec файлу с инструкциями по сборке текущего пакета.  
+
+[source, bash]
+----
+Name: notify
+Version: 0.1
+Release: alt1
+
+Summary: Display system time every hour
+License: GPLv3+
+Group: Other
+
+BuildRequires: make
+BuildRequires: gcc-c++
+BuildRequires: libsystemd-devel Работа с ключами разработчика.
+
+Создание заявки
+
+Source0: %name-%version.tar
+
+%description
+This test program displays system date and time every hour via notification
+
+%prep
+%setup -q
+
+%build
+%make_build
+
+%install
+
+mkdir -p \
+	%buildroot/bin/
+install -Dm0644 %name %buildroot/bin/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp %name.timer %name.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+%files
+/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer
+
+%changelog
+* Thu Apr 13 2023 Sergey Okunkov <sok@altlinux.org> 0.1-alt1
+- Finished my task
+----
+
+
+В заголовке или "шапке" .spec файла описаны следующие поля:
+
+[source, bash]
+----
+Name: notify
+Version: 0.1
+Release: alt1
+
+Summary: Display system time every hour
+License: GPLv3+
+Group: Other
+
+BuildRequires: make
+BuildRequires: gcc-c++
+BuildRequires: libsystemd-devel
+
+Source0: %name-%version.tar
+----
+
+Стандартная схема Name-Version-Release, содержащая в себе имя пакета, его версию и релиз сборки. Поле Summary включает в себя краткое описание пакета. License - лицензия, под которой выпускается данное ПО. В данном случае - GPLv3. Группа - категория, к которой относится пакет. Так как это тестовый пакет для примера, выставим группу "Other". BuildRequares - пакеты, необходимые для _сборки_. Так как исходный код написан на c++, нам необходим компилятор `g + +`, система сборки программы - make и библиотека для работы с модулями systemd - `libsystemd-devel`. Source0 - путь к архиву с исходниками (%name-%version.tar). На этом заголовок .spec файла заканчивается.
+
+Тело .spec файла, или же его основная часть. 
+
+[source, bash]
+----
+%description
+This test program displays system date and time every hour via notification
+
+%prep
+%setup -q
+
+%build
+%make
+
+%install
+
+mkdir -p \
+	%buildroot/bin/
+install -Dm0644 %name %buildroot/bin/
+
+mkdir -p \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+cp %name.timer %name.service \
+	%buildroot%_sysconfdir/xdg/systemd/user/
+
+%files
+/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer
+----
+
+Секция %description - описание того, что делает программа. В данном примере - вывод системного уведомления с датой и временем. 
+
+Секция %prep. Макрос %setup с флагом `-q` распаковывает архив, описанный в секции Source0.
+
+В секции %build происходит _сборка исходного кода_. Так как в примере присутствует Makefile для автоматизации процесса сборки, то в секции будет указан макрос %make_build, использующий Makefile для сборки программы. 
+
+
+Секция %install
+
+Здесь происходит эмуляция конечных путей при установке файлов в систему. Мы переносим файл в buildroot в те пути, куда файлы будут помещены после установки пакета в систему пользователя. Так как файла три, для каждого пропишем конечный путь:
+
+. `notify` - скомпилированный бинарный файл. В Unix-подобных системах бинарные файлы располагаются в каталоге 
+/bin. `mkdir -p %buildroot/bin` - строка, в которой создаётся каталог bin в окружении buildroot. Следующая строка - `install -Dm0644 %name %buildroot/bin/` - установка бинарного файла notify в каталог `%buildroot/bin/` с разрешениями 644.
+ 
+. `%name.timer`, `%name.service` - юниты systemd. Данные юниты относятся к пользовательским и находятся в `/etc/xdg/systemd/user/`. Как и для предыдущего файла, создадим в окружении buildroot каталог `mkdir -p %buildroot%_sysconfdir/xdg/systemd/user/`. В пути использован макрос `%_sysconfdir`, который заменяется путём 
+`/etc`. Следующая строка `cp %name.timer %name.service %buildroot%_sysconfdir/xdg/systemd/user/` - переносит данные файлы по заданному пути в окружении buildroot.
+
+Секция %files 
+
+Описывает какие файлы и директории будут скопрованы в систему при установке пакета.
+
+[source, bash]
+----
+/bin/%name
+/etc/xdg/systemd/user/%name.service
+/etc/xdg/systemd/user/%name.timer
+----
+
+
+
+
+
+
+

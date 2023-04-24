@@ -1,5 +1,5 @@
 = Руководство по сборке RPM-пакетов для дистрибутивов Альт
-Валентин Соколов и другие.
+Валентин Соколов, Мария Фоканова и другие.
 :imagesdir: images
 :toc: left
 :toclevels: 3
@@ -10,9 +10,9 @@
 :note-caption: Примечание
 :appendix-caption: Приложение
 
-include::source/why-package-rpm.adoc[leveloffset=+1]
-
 include::source/introduction.adoc[leveloffset=+1]
+
+include::source/why-package-rpm.adoc[leveloffset=+1]
 
 include::source/contributing-to-this-guide.adoc[leveloffset=+1]
 
@@ -26,9 +26,9 @@ include::source/packaging-software.adoc[leveloffset=+1]
 
 include::source/gear.adoc[leveloffset=+1]
 
-include::source/preparing-programs.adoc[leveloffset=+1]
+include::source/example.adoc[leveloffset=+1]
 
-//include::source/macro.adoc[leveloffset=+1]
+include::source/Join.adoc[leveloffset=+1]
 
 //include::source/patch.adoc[leveloffset=+1]
 
