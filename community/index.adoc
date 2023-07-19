@@ -16,24 +16,10 @@ include::source/why-package-rpm.adoc[leveloffset=+1]
 
 include::source/packaging-software.adoc[leveloffset=+1]
 
+include::source/alt_spec.adoc[leveloffset=+1]
+
 include::source/gear.adoc[leveloffset=+1]
-
-include::source/preparing-software.adoc[leveloffset=+1]
-
-include::source/example.adoc[leveloffset=+1]
-
-include::source/patch.adoc[leveloffset=+1]
-
-include::source/advanced-topics.adoc[leveloffset=+1]
-
-include::source/Join.adoc[leveloffset=+1]
 
 include::source/hasher.adoc[leveloffset=+1]
 
-
-
-//include::source/features-rhel7.adoc[leveloffset=+1]
-
-//include::source/references.adoc[leveloffset=+1]
-
-//include::source/acknowledgements.adoc[leveloffset=+1]
+include::source/example.adoc[leveloffset=+1]
