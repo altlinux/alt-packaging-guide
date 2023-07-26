@@ -18,6 +18,8 @@ include::source/packaging-software.adoc[leveloffset=+1]
 
 include::source/alt_spec.adoc[leveloffset=+1]
 
+include::source/alt-macro.adoc[leveloffset+1]
+
 include::source/gear.adoc[leveloffset=+1]
 
 include::source/hasher.adoc[leveloffset=+1]
