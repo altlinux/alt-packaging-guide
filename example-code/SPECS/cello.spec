@@ -24,7 +24,7 @@ The long-tail description for our Hello World Example implemented in C.
 %make
 
 %install
-%make_install_std
+%makeinstall_std
 
 %files
 %doc LICENSE
