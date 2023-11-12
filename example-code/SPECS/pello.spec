@@ -20,6 +20,12 @@ The long-tail description for our Hello World Example implemented in Python.
 %prep
 %setup -q
 
+# fix python shebang for scripts
+grep -R '^#!/usr/bin/\(env[[:space:]]\+\)\?python' . | cut -d: -f1 |
+    while read f; do
+        sed -E -i '1 s@^(#![[:space:]]*)%_bindir/(env[[:space:]]+)?python$@\1%__python3@' "$f"
+    done
+
 %install
 mkdir -p %buildroot%_bindir
 mkdir -p %buildroot%_libexecdir/%name
