@@ -5,7 +5,7 @@ Summary: Simplest package
 Group: Other
 
 License: GPLv3+
-URL: https://github.com/altlinux/alt-packaging-guide/tree/master/example-code
+URL: https://github.com/alt-packaging-guide/simplest
 
 %description
 Description of simplest package.
