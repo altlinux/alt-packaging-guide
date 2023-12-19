@@ -25,3 +25,5 @@ include::source/gear.adoc[leveloffset=+1]
 include::source/hasher.adoc[leveloffset=+1]
 
 include::source/example.adoc[leveloffset=+1]
+
+include::source/hello-world_example.adoc[leveloffset=+1]
