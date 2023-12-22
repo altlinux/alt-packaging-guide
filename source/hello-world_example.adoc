@@ -3,6 +3,8 @@
 
 Для примера сборки пакетов будем использовать простые программы на языках C++, Python, Bash. Программы выводят строку "Hello World!" в терминал.
 
+NOTE: *Каждый проект можно скачать из https://github.com/SokolovValy/Alt_Example_Code[GitHub репозитория].*
+
 == Исходные тексты:
 
 === C++
@@ -661,48 +663,3 @@ Wrote: /usr/src/RPM/RPMS/noarch/cello-1.0-alt1.x86_64.rpm (w2.lzdio)
 
 Если сборка прошла успешно, собранный пакет cello-1.0-alt1.x86_64.rpm будет находиться в /home/user/hasher/repo/x86_64/RPMS.hasher.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[source,bash]
-----
-
-----
