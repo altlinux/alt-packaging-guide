@@ -1,0 +1,3 @@
+[submodule "Alt_Example_Code"]
+	path = Alt_Example_Code
+	url = git@github.com:SokolovValy/Alt_Example_Code.git
